@@ -73,7 +73,7 @@ async def analyze_food_photo(image_bytes: bytes, mime_type: str = "image/jpeg") 
                 parts=[
                     types.Part.from_bytes(data=image_bytes, mime_type=mime_type),
                     types.Part.from_text(
-                        "Analyze this food image. Identify the food items and estimate "
+                        text="Analyze this food image. Identify the food items and estimate "
                         "their nutritional content (calories, protein, carbs, fat, serving size). "
                         "Return a JSON object."
                     ),
@@ -116,7 +116,7 @@ async def analyze_food_text(text: str) -> NutritionResult:
                 role="user",
                 parts=[
                     types.Part.from_text(
-                        f"The user described their meal as: \"{text}\"\n\n"
+                        text=f"The user described their meal as: \"{text}\"\n\n"
                         "Parse this description, identify the food items, and estimate "
                         "their combined nutritional content. Return a JSON object."
                     ),
