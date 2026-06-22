@@ -1,0 +1,121 @@
+/* ── Auth Page ────────────────────────────────────────── */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  background-color: var(--color-bone);
+  position: relative;
+}
+
+.auth-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(241, 204, 255, 0.2) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--color-paper);
+  border: 1px solid var(--color-silver);
+  border-radius: var(--radius-cards);
+  padding: var(--space-2xl);
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.auth-brand {
+  display: inline-flex;
+  margin-bottom: var(--space-md);
+  color: var(--color-obsidian);
+}
+
+.auth-title {
+  font-family: var(--font-pp-editorial-new);
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--color-obsidian);
+  margin-bottom: var(--space-xs);
+}
+
+.auth-subtitle {
+  font-family: var(--font-switzer);
+  color: var(--color-slate);
+  font-size: 0.9rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.auth-error {
+  padding: var(--space-md);
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  border-radius: var(--radius-inputs);
+  color: var(--color-error);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-slate);
+  pointer-events: none;
+}
+
+.input-icon-left {
+  padding-left: 44px;
+}
+
+.auth-submit {
+  width: 100%;
+  margin-top: var(--space-sm);
+}
+
+.spin {
+  animation: spin 0.7s linear infinite;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-silver);
+  font-size: 0.85rem;
+  color: var(--color-slate);
+}
+
+.auth-footer a {
+  font-weight: 600;
+  color: var(--color-obsidian);
+}
+.auth-footer a:hover {
+  color: var(--color-slate);
+}

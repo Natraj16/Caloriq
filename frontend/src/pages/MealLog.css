@@ -1,0 +1,377 @@
+/* ── Meal Log Page ────────────────────────────────────── */
+
+.meal-log-page {
+  padding-bottom: var(--space-3xl);
+  background-color: var(--color-paper);
+}
+
+.meal-log-header {
+  margin-bottom: var(--spacing-40);
+  text-align: left;
+}
+
+.meal-log-header h1 {
+  font-family: var(--font-pp-editorial-new);
+  font-size: var(--text-display);
+  font-weight: 400;
+  color: var(--color-obsidian);
+  margin-bottom: var(--space-xs);
+}
+
+.text-secondary {
+  font-family: var(--font-switzer);
+  color: var(--color-slate);
+}
+
+.meal-log-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-32);
+  align-items: start;
+}
+
+/* ── Input Card ───────────────────────────────────────── */
+.meal-input-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  border: 1px solid var(--color-silver);
+  box-shadow: var(--shadow-sm);
+  background-color: var(--color-paper);
+  border-radius: var(--radius-cards);
+}
+
+.meal-type-selector {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.meal-type-btn {
+  padding: 8px 16px;
+  background: var(--color-bone);
+  border: 1px solid var(--color-silver);
+  border-radius: var(--radius-pills);
+  font-family: var(--font-switzer);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-graphite);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.meal-type-btn:hover {
+  background: var(--color-silver);
+  color: var(--color-obsidian);
+}
+
+.meal-type-btn.active {
+  background: var(--color-lilac-bloom);
+  border-color: var(--color-lilac-bloom);
+  color: var(--color-obsidian);
+}
+
+/* Tabs */
+.input-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--color-bone);
+  border-radius: var(--radius-inputs);
+  padding: 4px;
+  border: 1px solid var(--color-silver);
+}
+
+.tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-switzer);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-slate);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tab-btn:hover {
+  color: var(--color-obsidian);
+}
+
+.tab-btn.active {
+  background: var(--color-paper);
+  color: var(--color-obsidian);
+  box-shadow: var(--shadow-subtle);
+}
+
+/* Input Content */
+.input-content {
+  min-height: 140px;
+}
+
+.meal-textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+  border: 1px solid var(--color-silver);
+}
+
+.barcode-hint {
+  font-size: 13px;
+  color: var(--color-slate);
+  margin-top: var(--space-sm);
+  line-height: 1.5;
+}
+
+/* Photo Upload */
+.photo-input-area {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.photo-upload-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xl);
+  background: var(--color-bone);
+  border: 2px dashed var(--color-silver);
+  border-radius: var(--radius-cards);
+  color: var(--color-graphite);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-family: var(--font-switzer);
+  font-size: 15px;
+}
+
+.photo-upload-btn:hover {
+  border-color: var(--color-slate);
+  background: var(--color-silver);
+  color: var(--color-obsidian);
+}
+
+.photo-hint {
+  font-size: 13px;
+  color: var(--color-slate);
+}
+
+.photo-preview {
+  position: relative;
+  border-radius: var(--radius-cards);
+  overflow: hidden;
+}
+
+.photo-preview img {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: var(--radius-cards);
+}
+
+.photo-clear {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  background: rgba(0, 0, 0, 0.7) !important;
+  color: white !important;
+  border-radius: 8px;
+}
+
+.meal-submit {
+  width: 100%;
+}
+
+/* ── Result Panel ─────────────────────────────────────── */
+.result-panel {
+  position: sticky;
+  top: 80px;
+}
+
+.result-card {
+  border-color: var(--color-silver);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-cards);
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.result-success {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-success);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.tier-time {
+  opacity: 0.7;
+  margin-left: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.result-food-name {
+  font-family: var(--font-switzer);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-obsidian);
+  margin-bottom: 2px;
+  letter-spacing: -0.01em;
+}
+
+.result-serving {
+  font-size: 14px;
+  color: var(--color-slate);
+  margin-bottom: var(--space-lg);
+}
+
+/* Macro Grid */
+.macro-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.macro-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-md);
+  border-radius: var(--radius-cards);
+  text-align: center;
+  box-shadow: var(--shadow-subtle);
+}
+
+.macro-calories {
+  background: rgba(211, 47, 47, 0.05);
+  border: 1px solid rgba(211, 47, 47, 0.12);
+}
+.macro-protein {
+  background: rgba(79, 70, 229, 0.05);
+  border: 1px solid rgba(79, 70, 229, 0.12);
+}
+.macro-carbs {
+  background: rgba(230, 126, 34, 0.05);
+  border: 1px solid rgba(230, 126, 34, 0.12);
+}
+.macro-fat {
+  background: rgba(15, 157, 88, 0.05);
+  border: 1px solid rgba(15, 157, 88, 0.12);
+}
+
+.macro-value {
+  font-size: var(--text-heading-sm);
+  font-weight: 700;
+}
+
+.macro-calories .macro-value { color: var(--color-calories); }
+.macro-protein .macro-value { color: var(--color-protein); }
+.macro-carbs .macro-value { color: var(--color-carbs); }
+.macro-fat .macro-value { color: var(--color-fat); }
+
+.macro-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-slate);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+/* Confidence */
+.confidence-bar {
+  margin-top: var(--space-sm);
+}
+
+.confidence-label {
+  display: block;
+  font-size: 14px;
+  color: var(--color-graphite);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.confidence-track {
+  height: 6px;
+  background: var(--color-bone);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  background: var(--color-lilac-bloom);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+}
+
+/* Placeholder */
+.result-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-3xl) var(--space-lg);
+  color: var(--color-slate);
+  border: 1px dashed var(--color-silver);
+  border-radius: var(--radius-cards);
+  min-height: 300px;
+  background: var(--color-bone);
+}
+
+.result-placeholder-icon {
+  color: var(--color-slate);
+  margin-bottom: var(--space-md);
+  opacity: 0.5;
+}
+
+.result-placeholder h3 {
+  font-weight: 500;
+  margin-top: var(--space-sm);
+}
+
+.result-placeholder-hint {
+  font-size: 13px;
+  margin-top: var(--space-xs);
+  color: var(--color-slate);
+}
+
+.result-adjustment-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-silver);
+  padding-bottom: var(--space-md);
+}
+
+.input-row-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+@media (max-width: 768px) {
+  .meal-log-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  .result-panel {
+    position: static;
+  }
+}

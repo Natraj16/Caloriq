@@ -1,0 +1,24 @@
+# Caloriq Backend
+
+# Byte-compiled
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual env
+venv/
+.venv/
+
+# Environment
+.env
+
+# Database (SQLite dev file)
+*.db
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
