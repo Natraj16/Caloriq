@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "Caloriq"
     APP_VERSION: str = "0.1.0"
     DEBUG: bool = True
+    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173"
 
     # ── Database (SQLite default → PostgreSQL in prod) ──
     DATABASE_URL: str = "sqlite:///./caloriq.db"
