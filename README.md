@@ -141,3 +141,4 @@ caloriq/
 ### 🧪 Phase 6 — Hardening
 * Unit testing for pipeline lookup fallbacks and token validation using pytest.
 * Locust load testing to ensure concurrency compliance.
+
