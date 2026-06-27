@@ -38,6 +38,7 @@ def register(body: UserRegister, db: Session = Depends(get_db)):
     user = User(
         email=body.email,
         password_hash=hash_password(body.password),
+        name=body.name or body.email.split("@")[0].capitalize(),
     )
     db.add(user)
     db.commit()
@@ -88,4 +89,5 @@ def me(current_user: User = Depends(get_current_user)):
         subscription_tier=current_user.subscription_tier,
         created_at=current_user.created_at,
         has_profile=current_user.profile is not None,
+        name=current_user.name,
     )

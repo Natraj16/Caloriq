@@ -13,7 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
 from app.database import Base, engine
-from app.routers import auth, meals
+from app.routers import auth, meals, profiles, weights, dashboard
 
 settings = get_settings()
 
@@ -68,6 +68,9 @@ else:
 # ── Register routers ────────────────────────────────────
 app.include_router(auth.router)
 app.include_router(meals.router)
+app.include_router(profiles.router)
+app.include_router(weights.router)
+app.include_router(dashboard.router)
 
 
 # ── Health check ─────────────────────────────────────────
