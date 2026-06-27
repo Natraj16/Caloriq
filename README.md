@@ -32,6 +32,12 @@ Every natural language query and photo upload passes through an intelligent fall
 * Full **Dark Mode / Light Mode** theme toggle with persistent `localStorage` memory.
 * Responsive layouts tailored for desktop and mobile viewport sizes.
 
+### 5. Personalization & Dashboard (Phase 2 Completed)
+* **Body Metrics Onboarding:** Multi-step onboarding collecting age, height, weight, activity levels, allergies, and goals.
+* **Auto-Macro Budgets:** Automatic calorie and macro requirements calculator using the Mifflin-St Jeor equation.
+* **Custom Target Overrides:** Ability to individually override calculated values for Calories, Protein, Carbs, or Fat to suit unique dietary plans.
+* **Aggregated Dashboard:** Visual breakdown of daily remaining macros and metrics.
+
 ---
 
 ## 🛠️ Project Architecture
@@ -120,13 +126,7 @@ caloriq/
 
 ## 🔮 Upcoming Project Phases
 
-### 📈 Phase 2 — Personalization & Dashboard
-* **Body Metrics Onboarding:** Multi-step onboarding collecting age, height, weight, activity levels, allergies, and weight goals.
-* **Auto-Macro Budgets:** Automatic calorie and macro requirements calculator using the Mifflin-St Jeor equation.
-* **Aggregated Dashboard:** Circular progress rings and remaining macronutrient budget visualization.
-* ** streaks:** Logging consistency tracker.
-
-### 🤖 Phase 3 — Context-Aware AI Coach
+### 📈 Phase 3 — Context-Aware AI Coach
 * Conversational chat panel where an AI Coach answers dietary questions.
 * The assistant is grounded directly in the user's specific context (daily profile, allergy restrictions, target macros, and last 7 days of meal logs).
 
