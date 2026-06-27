@@ -25,3 +25,5 @@ httpx==0.28.1
 # Cache (optional - falls back to in-memory)
 redis==6.2.0
 
+# Timezones
+pytz
