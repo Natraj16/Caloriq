@@ -4,12 +4,14 @@ Caloriq — Pydantic schemas for auth endpoints.
 
 from datetime import datetime
 from pydantic import BaseModel, EmailStr, Field
+from typing import Optional
 
 
 # ── Registration ─────────────────────────────────────────
 class UserRegister(BaseModel):
     email: EmailStr
     password: str = Field(..., min_length=8, max_length=128)
+    name: Optional[str] = Field(None, max_length=255)
 
 
 class UserLogin(BaseModel):
@@ -36,5 +38,6 @@ class UserResponse(BaseModel):
     subscription_tier: str
     created_at: datetime
     has_profile: bool = False
+    name: Optional[str] = None
 
     model_config = {"from_attributes": True}

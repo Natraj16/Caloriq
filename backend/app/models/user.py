@@ -30,6 +30,9 @@ class User(Base):
     email: Mapped[str] = mapped_column(
         String(255), unique=True, nullable=False, index=True
     )
+    name: Mapped[str | None] = mapped_column(
+        String(255), nullable=True
+    )
     password_hash: Mapped[str | None] = mapped_column(
         String(255), nullable=True  # Nullable for Google OAuth users
     )
@@ -92,12 +95,20 @@ class UserProfile(Base):
     daily_protein_target: Mapped[int | None] = mapped_column(Integer, nullable=True)
     daily_carbs_target: Mapped[int | None] = mapped_column(Integer, nullable=True)
     daily_fat_target: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    custom_calorie_target: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    custom_protein_target: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    custom_carbs_target: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    custom_fat_target: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     # ── Settings ─────────────────────────────────────────
     timezone: Mapped[str] = mapped_column(String(50), default="UTC")
 
     # ── Relationships ────────────────────────────────────
     user: Mapped["User"] = relationship(back_populates="profile")
+
+    @property
+    def name(self) -> str | None:
+        return self.user.name if self.user else None
 
     def __repr__(self) -> str:
         return f"<UserProfile user_id={self.user_id}>"
