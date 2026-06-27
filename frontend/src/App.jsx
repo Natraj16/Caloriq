@@ -9,6 +9,10 @@ import Landing from './pages/Landing';
 import AuthPage from './pages/Auth';
 import MealLog from './pages/MealLog';
 import MealHistory from './pages/MealHistory';
+import Onboarding from './pages/Onboarding';
+import Dashboard from './pages/Dashboard';
+import Analytics from './pages/Analytics';
+import Profile from './pages/Profile';
 
 /**
  * Wraps routes that require authentication.
@@ -35,7 +39,7 @@ function GuestRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) return null;
-  return isAuthenticated ? <Navigate to="/log" replace /> : children;
+  return isAuthenticated ? <Navigate to="/dashboard" replace /> : children;
 }
 
 function AppRoutes() {
@@ -57,6 +61,18 @@ function AppRoutes() {
           </GuestRoute>
         } />
 
+        <Route path="/onboarding" element={
+          <ProtectedRoute>
+            <Onboarding />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+
         <Route path="/log" element={
           <ProtectedRoute>
             <MealLog />
@@ -66,6 +82,18 @@ function AppRoutes() {
         <Route path="/meals" element={
           <ProtectedRoute>
             <MealHistory />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/analytics" element={
+          <ProtectedRoute>
+            <Analytics />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <Profile />
           </ProtectedRoute>
         } />
 

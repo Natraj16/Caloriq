@@ -1,0 +1,150 @@
+.analytics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.timeframe-tabs {
+  display: flex;
+  background: var(--color-bone);
+  border: 1px solid var(--color-silver);
+  border-radius: var(--radius-pills);
+  padding: 4px;
+}
+
+.timeframe-tab {
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-pills);
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-graphite);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.timeframe-tab.active {
+  background: var(--color-paper);
+  color: var(--color-obsidian);
+  box-shadow: var(--shadow-sm);
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-xl);
+}
+
+.chart-card {
+  padding: 32px;
+  margin-bottom: var(--space-lg);
+}
+
+.chart-title-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.chart-legend {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.chart-svg-container {
+  width: 100%;
+  height: 240px;
+  position: relative;
+}
+
+.chart-axis-label {
+  font-size: 11px;
+  fill: var(--color-slate);
+  font-family: var(--font-mono);
+}
+
+.chart-grid-line {
+  stroke: var(--color-silver);
+  stroke-dasharray: 4 4;
+  opacity: 0.5;
+}
+
+.analytics-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.weight-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.weight-logs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.weight-log-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: var(--color-bone);
+  border-radius: var(--radius-inputs);
+  border: 1px solid var(--color-silver);
+}
+
+.weight-log-date {
+  font-size: 13px;
+  color: var(--color-slate);
+}
+
+.weight-log-val {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.weight-log-delete {
+  background: transparent;
+  border: none;
+  color: var(--color-error);
+  cursor: pointer;
+  padding: 4px;
+  font-size: 14px;
+  transition: opacity var(--transition-fast);
+}
+
+.weight-log-delete:hover {
+  opacity: 0.7;
+}
+
+@media (max-width: 900px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}

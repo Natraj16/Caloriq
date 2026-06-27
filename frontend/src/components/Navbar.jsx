@@ -5,7 +5,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { Flame, LogOut, UtensilsCrossed, Sun, Moon } from 'lucide-react';
+import { Flame, LogOut, Sun, Moon, User } from 'lucide-react';
 import './Navbar.css';
 
 export default function Navbar() {
@@ -38,13 +38,19 @@ export default function Navbar() {
 
           {isAuthenticated ? (
             <>
-              <Link to="/log" className="btn btn-accent btn-sm">
-                <UtensilsCrossed size={16} />
-                Log Meal
-              </Link>
+              {user?.has_profile && (
+                <Link to="/dashboard" className="nav-link">Dashboard</Link>
+              )}
+              <Link to="/log" className="nav-link">Log Meal</Link>
               <Link to="/meals" className="nav-link">History</Link>
+              {user?.has_profile && (
+                <Link to="/analytics" className="nav-link">Analytics</Link>
+              )}
               <div className="navbar-user">
-                <span className="user-email">{user?.email}</span>
+                <Link to="/profile" className="nav-link profile-link" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <User size={16} />
+                  <span>Profile</span>
+                </Link>
                 <button onClick={handleLogout} className="btn btn-ghost btn-sm btn-icon" title="Logout">
                   <LogOut size={16} />
                 </button>
