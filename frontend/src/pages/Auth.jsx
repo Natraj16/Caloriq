@@ -5,7 +5,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Flame, Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
+import { Flame, Mail, Lock, ArrowRight, Loader2, User } from 'lucide-react';
 import './Auth.css';
 
 export default function AuthPage({ mode = 'login' }) {
@@ -15,6 +15,7 @@ export default function AuthPage({ mode = 'login' }) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -27,7 +28,7 @@ export default function AuthPage({ mode = 'login' }) {
       if (isLogin) {
         await login(email, password);
       } else {
-        await register(email, password);
+        await register(email, password, name);
       }
       navigate('/log');
     } catch (err) {
@@ -58,6 +59,24 @@ export default function AuthPage({ mode = 'login' }) {
 
         <form onSubmit={handleSubmit} className="auth-form">
           {error && <div className="auth-error">{error}</div>}
+
+          {!isLogin && (
+            <div className="input-group animate-fade-in">
+              <label className="input-label" htmlFor="auth-name">Full Name</label>
+              <div className="input-with-icon">
+                <User size={18} className="input-icon" />
+                <input
+                  id="auth-name"
+                  type="text"
+                  className="input input-icon-left"
+                  placeholder="Alex Smith"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required={!isLogin}
+                />
+              </div>
+            </div>
+          )}
 
           <div className="input-group">
             <label className="input-label" htmlFor="auth-email">Email</label>

@@ -56,8 +56,8 @@ api.interceptors.response.use(
 
 // ── Auth API ────────────────────────────────────────────
 export const authAPI = {
-  register: (email, password) =>
-    api.post('/api/auth/register', { email, password }),
+  register: (email, password, name) =>
+    api.post('/api/auth/register', { email, password, name }),
 
   login: (email, password) =>
     api.post('/api/auth/login', { email, password }),
@@ -92,6 +92,26 @@ export const mealsAPI = {
   get: (id) => api.get(`/api/meals/${id}`),
 
   delete: (id) => api.delete(`/api/meals/${id}`),
+};
+
+// ── Profile API ─────────────────────────────────────────
+export const profileAPI = {
+  get: () => api.get('/api/profile'),
+  create: (data) => api.post('/api/profile', data),
+  update: (data) => api.patch('/api/profile', data),
+};
+
+// ── Weight API ──────────────────────────────────────────
+export const weightAPI = {
+  list: () => api.get('/api/weights'),
+  log: (weight_kg, logged_at = null) => api.post('/api/weights', { weight_kg, logged_at }),
+  delete: (id) => api.delete(`/api/weights/${id}`),
+};
+
+// ── Dashboard / Analytics API ────────────────────────────
+export const dashboardAPI = {
+  summary: () => api.get('/api/dashboard/summary'),
+  analytics: (days = 7) => api.get('/api/dashboard/analytics', { params: { days } }),
 };
 
 export default api;

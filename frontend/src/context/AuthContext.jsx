@@ -39,8 +39,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   // ── Register ────────────────────────────────────────
-  const register = useCallback(async (email, password) => {
-    const { data: tokens } = await authAPI.register(email, password);
+  const register = useCallback(async (email, password, name) => {
+    const { data: tokens } = await authAPI.register(email, password, name);
     localStorage.setItem('access_token', tokens.access_token);
     localStorage.setItem('refresh_token', tokens.refresh_token);
     const { data: userData } = await authAPI.me();
@@ -55,6 +55,17 @@ export function AuthProvider({ children }) {
     setUser(null);
   }, []);
 
+  // ── Refresh User Data ──────────────────────────────
+  const refreshUser = useCallback(async () => {
+    try {
+      const { data: userData } = await authAPI.me();
+      setUser(userData);
+      return userData;
+    } catch (e) {
+      return null;
+    }
+  }, []);
+
   const value = {
     user,
     loading,
@@ -62,6 +73,7 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
+    refreshUser,
   };
 
   return (
