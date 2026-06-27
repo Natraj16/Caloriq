@@ -3,7 +3,7 @@
 Caloriq is a shift-ready, modern SaaS application designed to eliminate manual food entry. Instead of spending minutes selecting ingredients, users can log meals in seconds using three frictionless methods: typing a natural description, uploading a food photo, or scanning a barcode.
 
 The centerpiece of Caloriq is an optimized **4-Tier Cost-Control AI Pipeline** that reduces API token costs by ~90%, making it cost-defensible at scale.
-
+ 
 ---
 
 ## ⚡ Core Technical Features (Sprint 1 Completed)
