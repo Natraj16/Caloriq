@@ -30,7 +30,8 @@ class Settings(BaseSettings):
 
     # ── Gemini AI ────────────────────────────────────────
     GEMINI_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-2.5-flash"
+    GEMINI_MODEL: str = "gemini-2.5-flash"         # Used for food analysis
+    GEMINI_COACH_MODEL: str = "gemini-2.0-flash"   # Used for coach chat (higher free quota)
 
     # ── External APIs ────────────────────────────────────
     USDA_API_KEY: str = ""  # Free key from https://fdc.nal.usda.gov/api-key-signup
