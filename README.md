@@ -6,7 +6,7 @@ The centerpiece of Caloriq is an optimized **4-Tier Cost-Control AI Pipeline** t
  
 ---
 
-## ⚡ Core Technical Features (Sprint 1 Completed)
+## ⚡ Core Technical Features
 
 ### 1. The 4-Tier Nutrition Pipeline
 Every natural language query and photo upload passes through an intelligent fallback ladder:
@@ -32,11 +32,20 @@ Every natural language query and photo upload passes through an intelligent fall
 * Full **Dark Mode / Light Mode** theme toggle with persistent `localStorage` memory.
 * Responsive layouts tailored for desktop and mobile viewport sizes.
 
-### 5. Personalization & Dashboard (Phase 2 Completed)
+### 5. Personalization & Dashboard (Phase 2)
 * **Body Metrics Onboarding:** Multi-step onboarding collecting age, height, weight, activity levels, allergies, and goals.
 * **Auto-Macro Budgets:** Automatic calorie and macro requirements calculator using the Mifflin-St Jeor equation.
 * **Custom Target Overrides:** Ability to individually override calculated values for Calories, Protein, Carbs, or Fat to suit unique dietary plans.
 * **Aggregated Dashboard:** Visual breakdown of daily remaining macros and metrics.
+
+### 6. Context-Aware AI Coach — Coach Grit (Phase 3)
+* **Conversational Chat Panel:** A floating chat widget powered by Gemini that answers dietary questions grounded in the user's real-time context — profile, allergy restrictions, macro targets, and last 20 meal logs.
+* **Function Calling (Tool Use):** Coach Grit can actively perform actions in the app, not just give advice:
+  * **Log Weight:** *"Log my weight as 78kg"* → inserts a `WeightLog` row and updates the profile.
+  * **Update Targets:** *"Change my calorie target to 2200"* → writes `custom_calorie_target` and runs the full Mifflin-St Jeor recalculation pipeline to derive consistent protein, carbs, and fat targets.
+* **Real-Time Data Sync:** After any tool action, the coach broadcasts a `caloriq:data-changed` browser event. The Dashboard, Analytics, and Profile pages listen and re-fetch instantly — no page navigation required.
+* **Automatic Function Calling Disabled:** Manual tool-call handling loop ensures real DB writes happen (vs. the SDK silently calling the stub and doing nothing).
+* **Dual Model Configuration:** Food analysis uses `gemini-2.5-flash`; Coach chat uses a separately configurable `GEMINI_COACH_MODEL` (defaults to `gemini-2.0-flash`) to keep free-tier quotas from clashing.
 
 ---
 
@@ -50,17 +59,18 @@ caloriq/
 │   │   ├── config.py            # Pydantic-settings config loading (.env)
 │   │   ├── database.py          # Database setup (SQLite for dev, PostgreSQL ready)
 │   │   ├── cache.py             # Caching wrappers (Redis or in-memory fallback)
-│   │   ├── models/              # SQLAlchemy Database Models (User, MealLog)
-│   │   ├── schemas/             # Pydantic validation schemas
-│   │   ├── routers/             # API Router endpoints (Auth, Meals)
-│   │   └── services/            # Pipeline clients (USDA, OFF Barcode, Gemini AI)
+│   │   ├── models/              # SQLAlchemy Database Models (User, MealLog, WeightLog)
+│   │   ├── schemas/             # Pydantic validation schemas (incl. CoachChatResponse)
+│   │   ├── routers/             # API Router endpoints (Auth, Meals, Coach, Dashboard)
+│   │   ├── services/            # Pipeline clients (USDA, Gemini AI, Coach Service)
+│   │   └── utils/               # Shared utilities (targets.py — Mifflin-St Jeor calculator)
 │   ├── alembic/                 # Alembic DB Migration version tracker
 │   └── requirements.txt         # Pip dependency manifest
 └── frontend/
     ├── src/
-    │   ├── components/          # Shared components (Navbar)
+    │   ├── components/          # Shared components (Navbar, ChatWidget)
     │   ├── context/             # React Context Hooks (AuthContext, ThemeContext)
-    │   ├── pages/               # Route screens (Landing, Auth, MealLog, MealHistory)
+    │   ├── pages/               # Route screens (Dashboard, Analytics, Profile, MealLog)
     │   ├── services/            # Axios interceptor clients (API calls)
     │   └── index.css            # Global CSS tokens & "Gleap" theme overrides
     ├── index.html
@@ -99,6 +109,8 @@ caloriq/
 5. Populate your `.env` keys:
    * `SECRET_KEY`: Set this to a secure random string.
    * `GEMINI_API_KEY`: Get your free key from [Google AI Studio](https://aistudio.google.com/apikey).
+   * `GEMINI_MODEL`: Model used for food analysis (default: `gemini-2.5-flash`).
+   * `GEMINI_COACH_MODEL`: Model used for Coach Grit chat (default: `gemini-2.0-flash`).
    * `USDA_API_KEY`: *(Optional)* Get your key from [USDA FoodData Central](https://fdc.nal.usda.gov/api-key-signup).
 6. Spin up the FastAPI server:
    ```bash
@@ -126,10 +138,6 @@ caloriq/
 
 ## 🔮 Upcoming Project Phases
 
-### 📈 Phase 3 — Context-Aware AI Coach
-* Conversational chat panel where an AI Coach answers dietary questions.
-* The assistant is grounded directly in the user's specific context (daily profile, allergy restrictions, target macros, and last 7 days of meal logs).
-
 ### 🏆 Phase 4 — Gamified Challenges & Weekly Digests
 * Interactive challenges (e.g., "Sugar Limit", "Protein Target Booster", "Hydration Builder").
 * Weekly emails (via Resend) summing up nutritional trends, weight metrics, and streak statuses.
@@ -141,4 +149,3 @@ caloriq/
 ### 🧪 Phase 6 — Hardening
 * Unit testing for pipeline lookup fallbacks and token validation using pytest.
 * Locust load testing to ensure concurrency compliance.
-
