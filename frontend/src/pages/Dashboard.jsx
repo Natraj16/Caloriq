@@ -26,7 +26,11 @@ export default function Dashboard() {
           mealsAPI.list(1, 5)
         ]);
         setSummary(sumRes.data);
-        setRecentMeals(mealsRes.data.meals || []);
+        const todayStr = new Date().toLocaleDateString();
+        const todaysMeals = (mealsRes.data.meals || []).filter(meal => 
+          new Date(meal.logged_at).toLocaleDateString() === todayStr
+        );
+        setRecentMeals(todaysMeals);
       } catch (err) {
         setError('Failed to load dashboard data. Please try again.');
       } finally {
@@ -35,6 +39,11 @@ export default function Dashboard() {
     }
 
     loadData();
+
+    // Re-fetch when the AI coach logs weight or changes targets
+    const handleCoachDataChange = () => loadData();
+    window.addEventListener('caloriq:data-changed', handleCoachDataChange);
+    return () => window.removeEventListener('caloriq:data-changed', handleCoachDataChange);
   }, [user, navigate]);
 
   if (loading) {

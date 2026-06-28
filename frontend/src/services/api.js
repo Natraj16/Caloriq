@@ -114,4 +114,9 @@ export const dashboardAPI = {
   analytics: (days = 7) => api.get('/api/dashboard/analytics', { params: { days } }),
 };
 
+// ── Coach API ───────────────────────────────────────────
+export const coachAPI = {
+  chat: (message, history) => api.post('/api/coach/chat', { message, history }),
+};
+
 export default api;

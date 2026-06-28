@@ -32,6 +32,11 @@ export default function Analytics() {
 
   useEffect(() => {
     loadData();
+
+    // Re-fetch when the AI coach logs weight or changes targets
+    const handleCoachDataChange = () => loadData();
+    window.addEventListener('caloriq:data-changed', handleCoachDataChange);
+    return () => window.removeEventListener('caloriq:data-changed', handleCoachDataChange);
   }, [timeframe]);
 
   // ── Log Weight ───────────────────────────────────────

@@ -64,6 +64,11 @@ export default function Profile() {
       }
     }
     fetchProfile();
+
+    // Re-fetch when the AI coach updates weight or macro targets
+    const handleCoachDataChange = () => fetchProfile();
+    window.addEventListener('caloriq:data-changed', handleCoachDataChange);
+    return () => window.removeEventListener('caloriq:data-changed', handleCoachDataChange);
   }, []);
 
   const handleInputChange = (field, value) => {
