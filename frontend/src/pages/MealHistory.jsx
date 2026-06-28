@@ -95,43 +95,57 @@ export default function MealHistory() {
         ) : (
           <>
             <div className="meals-list">
-              {meals.map((meal) => {
-                const tier = TIER_META[meal.pipeline_tier] || TIER_META.gemini;
-                const TierIcon = tier.icon;
-                return (
-                  <div key={meal.id} className="meal-row animate-fade-in">
-                    <div className="meal-row-left">
-                      <span className="meal-emoji">{MEAL_EMOJI[meal.meal_type] || '🍽️'}</span>
-                      <div className="meal-info">
-                        <span className="meal-name">{meal.food_name}</span>
-                        <span className="meal-meta">
-                          {formatDate(meal.logged_at)} at {formatTime(meal.logged_at)}
-                          {meal.serving_size && ` · ${meal.serving_size}`}
-                        </span>
+              {Object.entries(
+                meals.reduce((groups, meal) => {
+                  const date = formatDate(meal.logged_at);
+                  if (!groups[date]) groups[date] = [];
+                  groups[date].push(meal);
+                  return groups;
+                }, {})
+              ).map(([date, dateMeals]) => (
+                <div key={date} className="meal-date-group">
+                  <h3 className="meal-date-header" style={{ margin: '1rem 0 0.5rem', fontSize: '1.1rem', color: 'var(--color-slate)' }}>
+                    {date === formatDate(new Date()) ? 'Today' : date}
+                  </h3>
+                  {dateMeals.map((meal) => {
+                    const tier = TIER_META[meal.pipeline_tier] || TIER_META.gemini;
+                    const TierIcon = tier.icon;
+                    return (
+                      <div key={meal.id} className="meal-row animate-fade-in">
+                        <div className="meal-row-left">
+                          <span className="meal-emoji">{MEAL_EMOJI[meal.meal_type] || '🍽️'}</span>
+                          <div className="meal-info">
+                            <span className="meal-name">{meal.food_name}</span>
+                            <span className="meal-meta">
+                              {formatTime(meal.logged_at)}
+                              {meal.serving_size && ` · ${meal.serving_size}`}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="meal-row-right">
+                          <div className="meal-macros">
+                            <span className="macro-chip macro-chip-calories">{Math.round(meal.calories)} kcal</span>
+                            <span className="macro-chip macro-chip-protein">{meal.protein_g.toFixed(1)}g P</span>
+                            <span className="macro-chip macro-chip-carbs">{meal.carbs_g.toFixed(1)}g C</span>
+                            <span className="macro-chip macro-chip-fat">{meal.fat_g.toFixed(1)}g F</span>
+                          </div>
+                          <div className={`tier-badge ${tier.color}`}>
+                            <TierIcon size={10} />
+                            {tier.label}
+                          </div>
+                          <button
+                            className="btn btn-ghost btn-icon btn-sm meal-delete"
+                            onClick={() => handleDelete(meal.id)}
+                            title="Delete meal"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                    <div className="meal-row-right">
-                      <div className="meal-macros">
-                        <span className="macro-chip macro-chip-calories">{Math.round(meal.calories)} kcal</span>
-                        <span className="macro-chip macro-chip-protein">{meal.protein_g.toFixed(1)}g P</span>
-                        <span className="macro-chip macro-chip-carbs">{meal.carbs_g.toFixed(1)}g C</span>
-                        <span className="macro-chip macro-chip-fat">{meal.fat_g.toFixed(1)}g F</span>
-                      </div>
-                      <div className={`tier-badge ${tier.color}`}>
-                        <TierIcon size={10} />
-                        {tier.label}
-                      </div>
-                      <button
-                        className="btn btn-ghost btn-icon btn-sm meal-delete"
-                        onClick={() => handleDelete(meal.id)}
-                        title="Delete meal"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
+                    );
+                  })}
+                </div>
+              ))}
             </div>
 
             {totalPages > 1 && (

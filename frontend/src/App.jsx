@@ -13,6 +13,7 @@ import Onboarding from './pages/Onboarding';
 import Dashboard from './pages/Dashboard';
 import Analytics from './pages/Analytics';
 import Profile from './pages/Profile';
+import ChatWidget from './components/ChatWidget';
 
 /**
  * Wraps routes that require authentication.
@@ -43,9 +44,12 @@ function GuestRoute({ children }) {
 }
 
 function AppRoutes() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <>
       <Navbar />
+      {isAuthenticated && <ChatWidget />}
       <Routes>
         <Route path="/" element={<Landing />} />
 

@@ -21,7 +21,7 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-inner">
-        <Link to="/" className="navbar-brand">
+        <Link to={isAuthenticated ? "/dashboard" : "/"} className="navbar-brand">
           <Flame size={24} className="brand-icon" />
           <span className="brand-text">Caloriq</span>
         </Link>
