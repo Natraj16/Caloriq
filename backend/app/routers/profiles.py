@@ -5,89 +5,10 @@ from app.database import get_db
 from app.models.user import User, UserProfile
 from app.schemas.profile import UserProfileCreate, UserProfileUpdate, UserProfileResponse
 from app.middleware.auth import get_current_user
+from app.utils.targets import calculate_targets
 
 router = APIRouter(prefix="/api/profile", tags=["profile"])
 
-
-def calculate_targets(
-    weight_kg: float,
-    height_cm: float,
-    age: int,
-    sex: str,
-    goal: str,
-    activity_level: str,
-    custom_calorie_target: int | None = None,
-    custom_protein_target: int | None = None,
-    custom_carbs_target: int | None = None,
-    custom_fat_target: int | None = None
-):
-    # If custom target is provided, bypass Mifflin-St Jeor calculations
-    if custom_calorie_target is not None:
-        calories = custom_calorie_target
-    else:
-        # Mifflin-St Jeor
-        if sex == "male":
-            bmr = 10.0 * weight_kg + 6.25 * height_cm - 5.0 * age + 5.0
-        elif sex == "female":
-            bmr = 10.0 * weight_kg + 6.25 * height_cm - 5.0 * age - 161.0
-        else:
-            # Average of male/female offsets: (+5 - 161) / 2 = -78
-            bmr = 10.0 * weight_kg + 6.25 * height_cm - 5.0 * age - 78.0
-
-        # Activity level multiplier
-        multipliers = {
-            "sedentary": 1.2,
-            "light": 1.375,
-            "moderate": 1.55,
-            "active": 1.725,
-            "very_active": 1.9,
-        }
-        tdee = bmr * multipliers.get(activity_level, 1.2)
-
-        # Goal adjustment
-        if goal == "lose":
-            calories = max(1200, int(tdee - 500))
-        elif goal == "gain":
-            calories = int(tdee + 500)
-        else:
-            calories = int(tdee)
-
-    # Protein target
-    if custom_protein_target is not None:
-        protein_g = custom_protein_target
-    else:
-        # Default calculation logic
-        if custom_calorie_target is not None:
-            protein_kcal = calories * 0.30
-            protein_g = protein_kcal / 4.0
-        else:
-            protein_g = 2.0 * weight_kg
-            protein_kcal = protein_g * 4.0
-            if protein_kcal > calories * 0.35:
-                protein_g = (calories * 0.30) / 4.0
-
-    # Fat target
-    if custom_fat_target is not None:
-        fat_g = custom_fat_target
-    else:
-        fat_kcal = calories * 0.25
-        fat_g = fat_kcal / 9.0
-
-    # Carbs target
-    if custom_carbs_target is not None:
-        carbs_g = custom_carbs_target
-    else:
-        p_kcal = protein_g * 4.0
-        f_kcal = fat_g * 9.0
-        carbs_kcal = max(0.0, calories - (p_kcal + f_kcal))
-        carbs_g = carbs_kcal / 4.0
-
-    return {
-        "daily_calorie_target": int(calories),
-        "daily_protein_target": int(round(protein_g)),
-        "daily_carbs_target": int(round(carbs_g)),
-        "daily_fat_target": int(round(fat_g)),
-    }
 
 
 @router.get("", response_model=UserProfileResponse)
