@@ -20,9 +20,9 @@ def get_user_tz(profile: UserProfile | None) -> pytz.BaseTzInfo:
         return pytz.utc
 
 
-def calculate_streak(meal_logs: list, tz: pytz.BaseTzInfo) -> int:
+def calculate_streak(activity_logs: list, tz: pytz.BaseTzInfo) -> int:
     local_dates = set()
-    for log in meal_logs:
+    for log in activity_logs:
         utc_dt = log.logged_at.replace(tzinfo=pytz.utc) if log.logged_at.tzinfo is None else log.logged_at
         local_dt = utc_dt.astimezone(tz)
         local_dates.add(local_dt.date())
@@ -56,15 +56,18 @@ def get_dashboard_summary(
     profile = db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
     tz = get_user_tz(profile)
 
-    # Defaults if profile doesn't exist
-    cal_target = profile.daily_calorie_target if profile else 2000
-    pro_target = profile.daily_protein_target if profile else 130
-    carb_target = profile.daily_carbs_target if profile else 220
-    fat_target = profile.daily_fat_target if profile else 65
+    # Prefer custom targets (set by user/coach) over auto-calculated, with fallbacks
+    cal_target = (profile.custom_calorie_target or profile.daily_calorie_target or 2000) if profile else 2000
+    pro_target = (profile.custom_protein_target or profile.daily_protein_target or 130) if profile else 130
+    carb_target = (profile.custom_carbs_target or profile.daily_carbs_target or 220) if profile else 220
+    fat_target = (profile.custom_fat_target or profile.daily_fat_target or 65) if profile else 65
 
-    # Fetch user meals to calculate streak and today's intake
+    # Fetch user meals and weights to calculate streak
     all_meals = db.query(MealLog).filter(MealLog.user_id == current_user.id).all()
-    streak = calculate_streak(all_meals, tz)
+    all_weights = db.query(WeightLog).filter(WeightLog.user_id == current_user.id).all()
+    all_activity = all_meals + all_weights
+    
+    streak = calculate_streak(all_activity, tz)
 
     today = datetime.now(tz).date()
     today_meals = []
