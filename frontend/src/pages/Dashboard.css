@@ -243,3 +243,30 @@
     gap: 16px;
   }
 }
+
+@media (max-width: 600px) {
+  .dashboard-hero-card {
+    padding: 20px;
+    border-radius: var(--radius-cards);
+  }
+  .dashboard-hero-text h1 {
+    font-size: var(--text-heading-sm);
+  }
+  .progress-card {
+    padding: 20px;
+  }
+  .calorie-summary {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .calorie-stats-list {
+    width: 100%;
+  }
+  .macros-progress-grid {
+    grid-template-columns: 1fr;
+  }
+  .summary-card {
+    padding: 16px;
+  }
+}
