@@ -5,6 +5,7 @@ DATABASE_URL defaults to SQLite for local dev.
 Set DATABASE_URL=postgresql+asyncpg://... in production.
 """
 
+from pydantic import model_validator
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 
@@ -42,6 +43,13 @@ class Settings(BaseSettings):
     COACH_CONTEXT_TTL: int = 900  # 15 minutes
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8", "extra": "ignore"}
+
+    @model_validator(mode="after")
+    def strip_whitespace(self) -> "Settings":
+        for field_name, field_value in self.__dict__.items():
+            if isinstance(field_value, str):
+                self.__dict__[field_name] = field_value.strip()
+        return self
 
 
 @lru_cache()
