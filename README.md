@@ -138,14 +138,21 @@ caloriq/
 
 ## 🔮 Upcoming Project Phases
 
-### 🏆 Phase 4 — Gamified Challenges & Weekly Digests
+### 🗄️ Phase 4 — Production-Grade Database Integration
+* Migrating from SQLite to fully managed **PostgreSQL** (e.g., Supabase, Neon, or Render PostgreSQL) for durable, long-term data storage.
+* Implementation of database connection pooling (e.g., using **pgBouncer** or SQLAlchemy's `QueuePool`) to handle concurrent serverless requests.
+* Setting up automatic, scheduled backups and Point-in-Time Recovery (PITR) to ensure zero data loss.
+
+### 🏆 Phase 5 — Gamified Challenges & Weekly Digests
 * Interactive challenges (e.g., "Sugar Limit", "Protein Target Booster", "Hydration Builder").
 * Weekly emails (via Resend) summing up nutritional trends, weight metrics, and streak statuses.
 
-### 💳 Phase 5 — API Keys & Subscriptions
+### 💳 Phase 6 — API Keys & Subscriptions
 * Public API key generation (B2B usage keys, rate limit, usage meters).
 * Payment processing using Dodo Payments for Pro subscription upgrades.
 
-### 🧪 Phase 6 — Hardening
+### 🧪 Phase 7 — Hardening
 * Unit testing for pipeline lookup fallbacks and token validation using pytest.
 * Locust load testing to ensure concurrency compliance.
+
+
