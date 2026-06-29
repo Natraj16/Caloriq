@@ -139,9 +139,9 @@ caloriq/
 ## 🔮 Upcoming Project Phases
 
 ### 🗄️ Phase 4 — Production-Grade Database Integration
-* Migrating from SQLite to fully managed **PostgreSQL** (e.g., Supabase, Neon, or Render PostgreSQL) for durable, long-term data storage.
-* Implementation of database connection pooling (e.g., using **pgBouncer** or SQLAlchemy's `QueuePool`) to handle concurrent serverless requests.
-* Setting up automatic, scheduled backups and Point-in-Time Recovery (PITR) to ensure zero data loss.
+* Migrating from SQLite to a free managed **PostgreSQL** database (e.g., **Supabase** or **Neon**) for zero-cost, long-term data storage.
+* Implementation of database connection pooling (e.g., using SQLAlchemy's built-in `QueuePool` or the cloud provider's native pooler connection string) to efficiently manage concurrent connections.
+
 
 ### 🏆 Phase 5 — Gamified Challenges & Weekly Digests
 * Interactive challenges (e.g., "Sugar Limit", "Protein Target Booster", "Hydration Builder").
@@ -151,8 +151,10 @@ caloriq/
 * Public API key generation (B2B usage keys, rate limit, usage meters).
 * Payment processing using Dodo Payments for Pro subscription upgrades.
 
-### 🧪 Phase 7 — Hardening
+### 🧪 Phase 7 — Hardening & Automation
 * Unit testing for pipeline lookup fallbacks and token validation using pytest.
 * Locust load testing to ensure concurrency compliance.
+* Setting up the Alembic migrations pipeline in CI/CD (GitHub Actions / Render build steps) to apply database schema updates to production automatically during deployments.
+
 
 
