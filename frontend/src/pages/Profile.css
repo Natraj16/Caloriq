@@ -153,3 +153,22 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 600px) {
+  .profile-container {
+    margin: 20px auto;
+    padding: 0 var(--space-md);
+  }
+  .profile-title {
+    font-size: var(--text-heading-sm);
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  .custom-targets-grid {
+    grid-template-columns: 1fr;
+  }
+  .profile-card {
+    padding: var(--space-md);
+  }
+}
