@@ -1,6 +1,9 @@
 .onboarding-container {
   max-width: 600px;
   margin: 40px auto;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
   animation: fadeIn 0.4s ease-out;
 }
 
@@ -11,6 +14,8 @@
   padding: 40px;
   box-shadow: var(--shadow-lg);
   text-align: center;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .onboarding-steps {
@@ -38,12 +43,14 @@
   font-size: var(--text-heading-sm);
   color: var(--color-obsidian);
   margin-bottom: 8px;
+  word-wrap: break-word;
 }
 
 .onboarding-subtitle {
   font-size: 16px;
   color: var(--color-slate);
   margin-bottom: 32px;
+  word-wrap: break-word;
 }
 
 .onboarding-form {
@@ -124,11 +131,29 @@
   flex: 1;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
+  .onboarding-container {
+    margin: 20px auto;
+  }
+  
+  .onboarding-card {
+    padding: 24px 16px;
+  }
+
   .options-grid, .multiselect-grid {
     grid-template-columns: 1fr;
   }
-  .onboarding-card {
-    padding: var(--card-padding);
+
+  .onboarding-title {
+    font-size: 28px; /* Slightly smaller for mobile */
+  }
+
+  .onboarding-subtitle {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .checkbox-tile {
+    padding: 12px;
   }
 }
