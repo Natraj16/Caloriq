@@ -2,6 +2,21 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { profileAPI } from '../services/api';
 import './Profile.css';
+const DIETARY_OPTIONS = [
+  { key: 'vegan', label: 'Vegan', description: 'No animal products (meat, dairy, eggs, honey)' },
+  { key: 'keto', label: 'Keto', description: 'High-fat, low-carbohydrate focus' },
+  { key: 'halal', label: 'Halal', description: 'Adheres to Islamic dietary guidelines' },
+  { key: 'vegetarian', label: 'Vegetarian', description: 'No meat, poultry, or fish' },
+  { key: 'paleo', label: 'Paleo', description: 'Whole foods (meat, fish, veggies, nuts)' }
+];
+
+const ALLERGY_OPTIONS = [
+  { key: 'nuts', label: 'Nuts', description: 'Peanuts and tree nuts' },
+  { key: 'dairy', label: 'Dairy', description: 'Milk, cheese, yogurt, and butter' },
+  { key: 'gluten', label: 'Gluten', description: 'Wheat, barley, rye, and oats' },
+  { key: 'soy', label: 'Soy', description: 'Soybeans, tofu, soy milk, etc.' },
+  { key: 'shellfish', label: 'Shellfish', description: 'Shrimp, crab, lobster, clams' }
+];
 
 export default function Profile() {
   const { refreshUser } = useAuth();
@@ -341,18 +356,21 @@ export default function Profile() {
 
             <div className="input-group">
               <label className="input-label">Dietary Preferences</label>
-              <div className="multiselect-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                {['vegan', 'keto', 'halal', 'vegetarian', 'paleo'].map((pref) => {
-                  const active = formData.dietary_preferences.includes(pref);
+              <div className="multiselect-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+                {DIETARY_OPTIONS.map((pref) => {
+                  const active = formData.dietary_preferences.includes(pref.key);
                   return (
                     <div
-                      key={pref}
+                      key={pref.key}
                       className={`checkbox-tile ${active ? 'active' : ''}`}
-                      onClick={() => handleTogglePreference('dietary_preferences', pref)}
-                      style={{ padding: '8px 12px', fontSize: '14px' }}
+                      onClick={() => handleTogglePreference('dietary_preferences', pref.key)}
+                      style={{ padding: '10px 12px', fontSize: '14px', alignItems: 'flex-start' }}
                     >
-                      <input type="checkbox" checked={active} readOnly />
-                      <span>{pref.charAt(0).toUpperCase() + pref.slice(1)}</span>
+                      <input type="checkbox" checked={active} readOnly style={{ marginTop: '3px' }} />
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', textAlign: 'left' }}>
+                        <span style={{ fontWeight: '600', fontSize: '14px', color: 'var(--color-obsidian)' }}>{pref.label}</span>
+                        <span style={{ fontSize: '11px', color: 'var(--color-slate)', lineHeight: '1.2' }}>{pref.description}</span>
+                      </div>
                     </div>
                   );
                 })}
@@ -361,18 +379,21 @@ export default function Profile() {
 
             <div className="input-group">
               <label className="input-label">Allergies / Exclusions</label>
-              <div className="multiselect-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                {['nuts', 'dairy', 'gluten', 'soy', 'shellfish'].map((allergy) => {
-                  const active = formData.allergies.includes(allergy);
+              <div className="multiselect-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+                {ALLERGY_OPTIONS.map((allergy) => {
+                  const active = formData.allergies.includes(allergy.key);
                   return (
                     <div
-                      key={allergy}
+                      key={allergy.key}
                       className={`checkbox-tile ${active ? 'active' : ''}`}
-                      onClick={() => handleTogglePreference('allergies', allergy)}
-                      style={{ padding: '8px 12px', fontSize: '14px' }}
+                      onClick={() => handleTogglePreference('allergies', allergy.key)}
+                      style={{ padding: '10px 12px', fontSize: '14px', alignItems: 'flex-start' }}
                     >
-                      <input type="checkbox" checked={active} readOnly />
-                      <span>{allergy.charAt(0).toUpperCase() + allergy.slice(1)}</span>
+                      <input type="checkbox" checked={active} readOnly style={{ marginTop: '3px' }} />
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', textAlign: 'left' }}>
+                        <span style={{ fontWeight: '600', fontSize: '14px', color: 'var(--color-obsidian)' }}>{allergy.label}</span>
+                        <span style={{ fontSize: '11px', color: 'var(--color-slate)', lineHeight: '1.2' }}>{allergy.description}</span>
+                      </div>
                     </div>
                   );
                 })}
