@@ -40,7 +40,7 @@ export default function Navbar() {
               title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
               aria-label="Toggle theme"
             >
-              {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+              {theme === 'light' ? <Sun size={16} /> : <Moon size={16} />}
             </button>
 
             {isAuthenticated ? (
@@ -51,7 +51,10 @@ export default function Navbar() {
                 <Link to="/log" className="nav-link">Log Meal</Link>
                 <Link to="/meals" className="nav-link">History</Link>
                 {user?.has_profile && (
-                  <Link to="/analytics" className="nav-link">Analytics</Link>
+                  <>
+                    <Link to="/analytics" className="nav-link">Analytics</Link>
+                    <Link to="/challenges" className="nav-link">Challenges</Link>
+                  </>
                 )}
                 <div className="navbar-user">
                   <Link to="/profile" className="nav-link profile-link" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -99,7 +102,10 @@ export default function Navbar() {
             <Link to="/log" className="nav-link" onClick={closeMenu}>Log Meal</Link>
             <Link to="/meals" className="nav-link" onClick={closeMenu}>History</Link>
             {user?.has_profile && (
-              <Link to="/analytics" className="nav-link" onClick={closeMenu}>Analytics</Link>
+              <>
+                <Link to="/analytics" className="nav-link" onClick={closeMenu}>Analytics</Link>
+                <Link to="/challenges" className="nav-link" onClick={closeMenu}>Challenges</Link>
+              </>
             )}
             <Link to="/profile" className="nav-link" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <User size={16} /> Profile

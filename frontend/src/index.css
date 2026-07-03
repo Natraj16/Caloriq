@@ -93,7 +93,7 @@
   --shadow-md: rgba(0, 0, 0, 0.04) 0px 8px 16px 0px;
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.06);
   --shadow-subtle: rgba(16, 24, 40, 0.05) 0px 1px 2px 0px;
-  --shadow-glow: 0 0 25px rgba(241, 204, 255, 0.5);
+  --shadow-glow: 0 0 25px rgba(0, 0, 0, 0.1);
 
   /* Semantic / Macro colors (Adapted for Light canvas) */
   --color-calories: #D32F2F;
@@ -544,7 +544,7 @@ h4 { font-size: 1.15rem; }
   --shadow-md: rgba(0, 0, 0, 0.4) 0px 8px 16px 0px;
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
   --shadow-subtle: rgba(0, 0, 0, 0.3) 0px 1px 2px 0px;
-  --shadow-glow: 0 0 25px rgba(225, 179, 252, 0.25);
+  --shadow-glow: 0 0 25px rgba(255, 255, 255, 0.25);
 
   /* Semantic / Macro colors (Slightly adjusted for dark theme readability) */
   --color-calories: #ff5252;
