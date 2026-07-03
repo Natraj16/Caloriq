@@ -103,8 +103,16 @@ class UserProfile(Base):
     # ── Settings ─────────────────────────────────────────
     timezone: Mapped[str] = mapped_column(String(50), default="UTC")
 
+    # ── Gamification ─────────────────────────────────────
+    streak_days: Mapped[int] = mapped_column(Integer, default=0)
+    last_logged_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    total_points: Mapped[int] = mapped_column(Integer, default=0)
+
     # ── Relationships ────────────────────────────────────
     user: Mapped["User"] = relationship(back_populates="profile")
+    user_challenges: Mapped[list["UserChallenge"]] = relationship(
+        back_populates="profile", cascade="all, delete-orphan"
+    )
 
     @property
     def name(self) -> str | None:

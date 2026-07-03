@@ -14,6 +14,7 @@ from app.database import Base
 # Import all models so Alembic can detect them
 from app.models.user import User, UserProfile  # noqa: F401
 from app.models.meal import MealLog, WeightLog  # noqa: F401
+from app.models.challenge import Challenge, UserChallenge  # noqa: F401
 
 # Alembic Config object
 config = context.config
