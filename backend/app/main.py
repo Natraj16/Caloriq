@@ -13,7 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
 from app.database import Base, engine
-from app.routers import auth, meals, profiles, weights, dashboard, coach
+from app.routers import auth, meals, profiles, weights, dashboard, coach, challenges
 
 settings = get_settings()
 
@@ -26,6 +26,7 @@ logging.basicConfig(
 logger = logging.getLogger("caloriq")
 
 
+
 # ── Lifespan: create tables on startup ───────────────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -33,6 +34,7 @@ async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
     logger.info("✅ Database tables created")
     logger.info("🚀 Caloriq API v%s is running", settings.APP_VERSION)
+
     yield
     logger.info("👋 Caloriq shutting down")
 
@@ -72,6 +74,7 @@ app.include_router(profiles.router)
 app.include_router(weights.router)
 app.include_router(dashboard.router)
 app.include_router(coach.router)
+app.include_router(challenges.router)
 
 
 # ── Health check ─────────────────────────────────────────
