@@ -49,7 +49,7 @@ Every natural language query and photo upload passes through an intelligent fall
 
 ### 7. Engagement & Gamified Challenges (Phase 4)
 * **Challenges:** Interactive preset challenges (e.g., "Sugar Limit", "Protein Target Booster", "Hydration Builder") featuring join/check-in flows and progress visualization.
-* **Streaks:** Daily logging streaks to drive habit formation, including "streak at risk" alerts to prevent drop-offs.
+* **Streaks:** Daily logging streaks to drive habit formation and prevent drop-offs.
 
 ---
 
