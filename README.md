@@ -47,6 +47,10 @@ Every natural language query and photo upload passes through an intelligent fall
 * **Automatic Function Calling Disabled:** Manual tool-call handling loop ensures real DB writes happen (vs. the SDK silently calling the stub and doing nothing).
 * **Dual Model Configuration:** Food analysis uses `gemini-2.5-flash`; Coach chat uses a separately configurable `GEMINI_COACH_MODEL` (defaults to `gemini-2.0-flash`) to keep free-tier quotas from clashing.
 
+### 7. Engagement & Gamified Challenges (Phase 4)
+* **Challenges:** Interactive preset challenges (e.g., "Sugar Limit", "Protein Target Booster", "Hydration Builder") featuring join/check-in flows and progress visualization.
+* **Streaks:** Daily logging streaks to drive habit formation, including "streak at risk" alerts to prevent drop-offs.
+
 ---
 
 ## 🛠️ Project Architecture
@@ -137,9 +141,6 @@ caloriq/
 ---
 
 ## 🔮 Upcoming Project Phases
-
-### 🏆 Phase 4 — Gamified Challenges
-* Interactive challenges (e.g., "Sugar Limit", "Protein Target Booster", "Hydration Builder").
 
 ### 📧 Phase 5 — Weekly Email Digests
 * Weekly emails (via Resend) summing up nutritional trends, weight metrics, and streak statuses.
