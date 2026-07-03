@@ -13,6 +13,7 @@ import Onboarding from './pages/Onboarding';
 import Dashboard from './pages/Dashboard';
 import Analytics from './pages/Analytics';
 import Profile from './pages/Profile';
+import Challenges from './pages/Challenges';
 import ChatWidget from './components/ChatWidget';
 
 /**
@@ -98,6 +99,12 @@ function AppRoutes() {
         <Route path="/profile" element={
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/challenges" element={
+          <ProtectedRoute>
+            <Challenges />
           </ProtectedRoute>
         } />
 

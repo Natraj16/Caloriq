@@ -9,8 +9,10 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [summary, setSummary] = useState(null);
   const [recentMeals, setRecentMeals] = useState([]);
+  const [activeChallenge, setActiveChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [api] = useState(() => import('../services/api').then(m => m.default));
 
   useEffect(() => {
     // If user has no profile, direct to onboarding
@@ -21,11 +23,20 @@ export default function Dashboard() {
 
     async function loadData() {
       try {
-        const [sumRes, mealsRes] = await Promise.all([
+        const apiModule = await import('../services/api');
+        const api = apiModule.default;
+        
+        const [sumRes, mealsRes, challengesRes] = await Promise.all([
           dashboardAPI.summary(),
-          mealsAPI.list(1, 5)
+          mealsAPI.list(1, 5),
+          api.get('/api/challenges').catch(() => ({ data: { active_user_challenges: [] } }))
         ]);
         setSummary(sumRes.data);
+        
+        const active = challengesRes.data.active_user_challenges;
+        if (active && active.length > 0) {
+          setActiveChallenge(active[0]);
+        }
         const todayStr = new Date().toLocaleDateString();
         const todaysMeals = (mealsRes.data.meals || []).filter(meal => 
           new Date(meal.logged_at).toLocaleDateString() === todayStr
@@ -211,7 +222,35 @@ export default function Dashboard() {
             <Link to="/analytics" className="btn btn-accent">
               📈 View Analytics
             </Link>
+            <Link to="/challenges" className="btn btn-primary" style={{ marginTop: '10px', background: 'var(--color-primary)' }}>
+              🏆 View Challenges
+            </Link>
           </div>
+
+          {/* Active Challenge Widget */}
+          {activeChallenge && (
+            <div className="card summary-card" style={{ border: '1px solid var(--color-primary)' }}>
+              <h3 className="summary-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                Active Challenge <span>🏆</span>
+              </h3>
+              <div style={{ marginBottom: '10px' }}>
+                <strong style={{ display: 'block', fontSize: '15px' }}>{activeChallenge.challenge.name}</strong>
+                <span style={{ fontSize: '13px', color: 'var(--color-slate)' }}>{activeChallenge.challenge.description}</span>
+              </div>
+              <div className="progress-bar" style={{ height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden', marginBottom: '5px' }}>
+                <div 
+                  style={{ 
+                    height: '100%', 
+                    background: 'var(--color-primary)', 
+                    width: `${Math.min(100, (activeChallenge.current_progress / activeChallenge.challenge.target_value) * 100)}%` 
+                  }}
+                />
+              </div>
+              <div style={{ fontSize: '12px', color: 'var(--color-slate)', textAlign: 'right' }}>
+                {activeChallenge.current_progress} / {activeChallenge.challenge.target_value}
+              </div>
+            </div>
+          )}
 
           {/* Recent Meals list */}
           <div className="card summary-card">
