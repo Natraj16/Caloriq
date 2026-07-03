@@ -33,6 +33,57 @@ async def lifespan(app: FastAPI):
     # Create all tables (for SQLite dev; in production use Alembic migrations)
     Base.metadata.create_all(bind=engine)
     logger.info("✅ Database tables created")
+    
+    # ── Seed Default Challenges ──────────────────────────────
+    from app.database import SessionLocal
+    from app.models.challenge import Challenge, ChallengeType
+    import uuid
+    from datetime import datetime, timezone
+
+    db = SessionLocal()
+    try:
+        existing_challenges = db.query(Challenge).count()
+        if existing_challenges == 0:
+            default_challenges = [
+                Challenge(
+                    id=str(uuid.uuid4()),
+                    name="Hydration Hero",
+                    description="Log at least 8 glasses of water a day.",
+                    type=ChallengeType.TARGET,
+                    target_value=8.0,
+                    reward_points=50,
+                    duration_days=1,
+                    created_at=datetime.now(timezone.utc)
+                ),
+                Challenge(
+                    id=str(uuid.uuid4()),
+                    name="Calorie Deficit",
+                    description="Stay under your daily calorie goal.",
+                    type=ChallengeType.LIMIT,
+                    target_value=2000.0,
+                    reward_points=100,
+                    duration_days=1,
+                    created_at=datetime.now(timezone.utc)
+                ),
+                Challenge(
+                    id=str(uuid.uuid4()),
+                    name="3-Day Streak",
+                    description="Log your meals for 3 consecutive days.",
+                    type=ChallengeType.STREAK,
+                    target_value=3.0,
+                    reward_points=200,
+                    duration_days=3,
+                    created_at=datetime.now(timezone.utc)
+                )
+            ]
+            db.add_all(default_challenges)
+            db.commit()
+            logger.info("✅ Seeded default challenges")
+    except Exception as e:
+        logger.error(f"Failed to seed challenges: {e}")
+    finally:
+        db.close()
+
     logger.info("🚀 Caloriq API v%s is running", settings.APP_VERSION)
 
     yield
