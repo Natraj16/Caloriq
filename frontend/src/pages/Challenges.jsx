@@ -68,8 +68,8 @@ const Challenges = () => {
                 <p>{uc.challenge.description}</p>
                 <div className="progress-container">
                   <div className="progress-bar">
-                    <div 
-                      className="progress-fill" 
+                    <div
+                      className="progress-fill"
                       style={{ width: `${Math.min(100, (uc.current_progress / uc.challenge.target_value) * 100)}%` }}
                     ></div>
                   </div>
