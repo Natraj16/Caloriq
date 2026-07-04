@@ -25,20 +25,20 @@ export default function Dashboard() {
       try {
         const apiModule = await import('../services/api');
         const api = apiModule.default;
-        
+
         const [sumRes, mealsRes, challengesRes] = await Promise.all([
           dashboardAPI.summary(),
           mealsAPI.list(1, 5),
           api.get('/api/challenges').catch(() => ({ data: { active_user_challenges: [] } }))
         ]);
         setSummary(sumRes.data);
-        
+
         const active = challengesRes.data.active_user_challenges;
         if (active && active.length > 0) {
           setActiveChallenge(active[0]);
         }
         const todayStr = new Date().toLocaleDateString();
-        const todaysMeals = (mealsRes.data.meals || []).filter(meal => 
+        const todaysMeals = (mealsRes.data.meals || []).filter(meal =>
           new Date(meal.logged_at).toLocaleDateString() === todayStr
         );
         setRecentMeals(todaysMeals);
@@ -89,7 +89,7 @@ export default function Dashboard() {
   return (
     <div className="page page-content animate-fade-in">
       <div className="dashboard-grid">
-        
+
         {/* Hero Card */}
         <div className="dashboard-hero-card">
           <div className="dashboard-hero-text">
@@ -104,13 +104,13 @@ export default function Dashboard() {
 
         {/* Main Section */}
         <div className="dashboard-main">
-          
+
           {/* Calorie & Macro Progress */}
           <div className="card progress-card">
             <h3 style={{ marginBottom: '24px' }}>Daily Energy Summary</h3>
-            
+
             <div className="calorie-summary">
-              
+
               {/* SVG Radial Progress Dial */}
               <div className="calorie-dial">
                 <svg>
@@ -159,7 +159,7 @@ export default function Dashboard() {
             {/* Macro Progress Bars */}
             <h3 style={{ borderTop: '1px solid var(--color-silver)', paddingTop: '24px', marginBottom: '16px' }}>Macro Breakdown</h3>
             <div className="macros-progress-grid">
-              
+
               {/* Protein */}
               <div className="macro-progress-bar">
                 <div className="macro-bar-label">
@@ -209,7 +209,7 @@ export default function Dashboard() {
 
         {/* Sidebar */}
         <div className="dashboard-sidebar">
-          
+
           {/* Shortcuts */}
           <div className="card actions-card">
             <h3>Quick Actions</h3>
@@ -238,11 +238,11 @@ export default function Dashboard() {
                 <span style={{ fontSize: '13px', color: 'var(--color-slate)' }}>{activeChallenge.challenge.description}</span>
               </div>
               <div className="progress-bar" style={{ height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden', marginBottom: '5px' }}>
-                <div 
-                  style={{ 
-                    height: '100%', 
-                    background: 'var(--color-primary)', 
-                    width: `${Math.min(100, (activeChallenge.current_progress / activeChallenge.challenge.target_value) * 100)}%` 
+                <div
+                  style={{
+                    height: '100%',
+                    background: 'var(--color-primary)',
+                    width: `${Math.min(100, (activeChallenge.current_progress / activeChallenge.challenge.target_value) * 100)}%`
                   }}
                 />
               </div>
