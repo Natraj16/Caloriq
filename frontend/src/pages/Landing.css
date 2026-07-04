@@ -82,7 +82,7 @@
   font-size: var(--text-display);
   font-weight: 400;
   color: var(--color-obsidian);
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--spacing-40);
   letter-spacing: -0.015em;
 }
 
@@ -91,6 +91,7 @@
   text-align: center;
   color: var(--color-slate);
   margin-bottom: var(--spacing-56);
+  margin-top: -16px;
   font-size: 16px;
 }
 
