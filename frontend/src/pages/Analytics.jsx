@@ -124,7 +124,7 @@ export default function Analytics() {
       {successMsg && <div style={{ color: 'var(--color-success)', marginBottom: '16px', fontSize: '15px' }}>{successMsg}</div>}
 
       <div className="analytics-grid">
-        
+
         {/* Charts area */}
         <div>
           {/* Calories Chart */}
@@ -315,7 +315,7 @@ export default function Analytics() {
 
         {/* Sidebar Log Weight */}
         <div className="analytics-sidebar">
-          
+
           <div className="card">
             <h3>Log Current Weight</h3>
             <form onSubmit={handleLogWeight} className="weight-form" style={{ marginTop: '16px' }}>
