@@ -26,7 +26,7 @@ const TIER_META = {
 
 const generateServingOptions = (servingStr, pipelineTier) => {
   const options = [];
-  
+
   if (!servingStr) {
     options.push({ label: '100 g', multiplier: 1.0, weight: 100 });
     options.push({ label: '1 g', multiplier: 0.01, weight: 1 });
@@ -117,7 +117,7 @@ const generateServingOptions = (servingStr, pipelineTier) => {
 
   // Always add 100g and 1g for metrics-based logging (standard for barcode/USDA)
   const unitSuffix = str.includes('ml') ? 'ml' : 'g';
-  
+
   if (!options.some(o => o.weight === 100)) {
     options.push({
       label: `100 ${unitSuffix}`,
@@ -227,7 +227,7 @@ export default function MealLog() {
     setError('');
     const mult = getSafeMultiplier();
     const opt = servingOptions[selectedOptionIndex];
-    const displayServingSize = opt 
+    const displayServingSize = opt
       ? `${quantity} x ${opt.label}`
       : `${quantity} serving`;
 
