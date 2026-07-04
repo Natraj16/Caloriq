@@ -51,6 +51,7 @@ export default function Landing() {
       {/* ── Input Methods ─────────────────────────────── */}
       <section className="features">
         <h2 className="section-title">Three ways to log, <span className="text-gradient">zero friction</span></h2>
+        <p className="section-subtitle">Choose the method that works best for you and start tracking your meals instantly.</p>
         <div className="features-grid">
           <div className="feature-card animate-slide-up" style={{ animationDelay: '0.1s' }}>
             <div className="feature-icon icon-photo">
@@ -80,7 +81,7 @@ export default function Landing() {
       <section className="benefits-section">
         <h2 className="section-title">Designed for your <span className="text-gradient">wellness journey</span></h2>
         <p className="section-subtitle">Caloriq goes beyond simple logging to provide smart, context-aware nutrition insights.</p>
-        
+
         <div className="benefits-grid">
           <div className="benefit-card">
             <div className="benefit-icon">
@@ -88,7 +89,7 @@ export default function Landing() {
             </div>
             <h3>Personalized AI Coach</h3>
             <p>
-              Chat with a dedicated nutrition coach that understands your daily targets, 
+              Chat with a dedicated nutrition coach that understands your daily targets,
               recent eating habits, and allergies. Receive actual personalized advice, not generic tips.
             </p>
           </div>
@@ -99,7 +100,7 @@ export default function Landing() {
             </div>
             <h3>Macro Customization</h3>
             <p>
-              Auto-calculate or customize calorie and macronutrient budgets based on your unique body 
+              Auto-calculate or customize calorie and macronutrient budgets based on your unique body
               metrics, dietary preferences, and fitness goals.
             </p>
           </div>
@@ -110,7 +111,7 @@ export default function Landing() {
             </div>
             <h3>Intelligent Analytics</h3>
             <p>
-              Track your weight trend, view historical logs, watch macro breakdowns, 
+              Track your weight trend, view historical logs, watch macro breakdowns,
               and build a consistent tracking habit with gamified streaks.
             </p>
           </div>
