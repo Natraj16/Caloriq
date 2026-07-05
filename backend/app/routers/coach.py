@@ -18,6 +18,15 @@ async def chat_with_coach(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    """
+    HTTP Endpoint for interacting with the AI Coach (Grit).
+    
+    FLOW:
+    1. Receives the user's message and chat history from the frontend.
+    2. Fetches the user's profile and their most recent meals from the database.
+    3. Passes this data down to the Service layer (`get_coach_response`) which handles the heavy lifting (AI).
+    4. Returns the AI's reply and any flags indicating if the UI needs to refresh data.
+    """
     # Get user profile
     result = db.execute(select(UserProfile).where(UserProfile.user_id == current_user.id))
     profile = result.scalar_one_or_none()
