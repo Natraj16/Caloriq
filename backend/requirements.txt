@@ -27,3 +27,8 @@ redis==6.2.0
 
 # Timezones
 pytz
+
+# LangChain
+langchain
+langchain-google-genai
+langchain-community
