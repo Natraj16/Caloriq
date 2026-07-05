@@ -3,6 +3,17 @@ Caloriq — FastAPI application factory.
 
 The main entry point for the backend server.
 Run with: uvicorn app.main:app --reload
+
+BACKEND ARCHITECTURE & FLOW:
+This FastAPI backend follows a layered architecture to separate concerns:
+1. Entry Point (`main.py`): Initializes the app, configures CORS, handles startup events (like DB creation/seeding), and registers all the routers.
+2. Routers (`app/routers/`): Define the HTTP endpoints (e.g., `/api/coach/chat`). They receive requests, perform basic validation, and pass data to the Services layer.
+3. Services (`app/services/`): Contain the core business logic. They interact with external APIs (like Gemini for the AI coach) and orchestrate database operations.
+4. Models (`app/models/`): Define the SQLAlchemy database schema (the shape of the data in PostgreSQL/SQLite).
+5. Schemas (`app/schemas/`): Define Pydantic models for data validation and serialization (request/response shapes).
+
+When a request comes in (e.g., sending a chat message to the coach), it flows like this:
+HTTP Request -> Router (`app/routers/coach.py`) -> Service (`app/services/coach_service.py`) -> LangChain/Gemini AI (`app/coach/chain.py`) -> DB operations -> HTTP Response.
 """
 
 import logging
