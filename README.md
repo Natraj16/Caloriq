@@ -40,11 +40,11 @@ Every natural language query and photo upload passes through an intelligent fall
 
 ### 6. Context-Aware AI Coach — Coach Grit (Phase 3)
 * **Conversational Chat Panel:** A floating chat widget powered by Gemini that answers dietary questions grounded in the user's real-time context — profile, allergy restrictions, macro targets, and last 20 meal logs.
-* **Function Calling (Tool Use):** Coach Grit can actively perform actions in the app, not just give advice:
+* **LangChain Integration:** The coach pipeline is orchestrated by LangChain, utilizing `ChatGoogleGenerativeAI` for generation, `ChatPromptTemplate` for robust prompt construction, and Redis-backed `ConversationBufferWindowMemory` for persisting chat history.
+* **Function Calling (Tool Use):** Coach Grit can actively perform actions in the app using LangChain tool binding (`bind_tools`):
   * **Log Weight:** *"Log my weight as 78kg"* → inserts a `WeightLog` row and updates the profile.
-  * **Update Targets:** *"Change my calorie target to 2200"* → writes `custom_calorie_target` and runs the full Mifflin-St Jeor recalculation pipeline to derive consistent protein, carbs, and fat targets.
+  * **Update Targets:** *"Change my calorie target to 2200"* → writes `custom_calorie_target` and runs the full recalculation pipeline.
 * **Real-Time Data Sync:** After any tool action, the coach broadcasts a `caloriq:data-changed` browser event. The Dashboard, Analytics, and Profile pages listen and re-fetch instantly — no page navigation required.
-* **Automatic Function Calling Disabled:** Manual tool-call handling loop ensures real DB writes happen (vs. the SDK silently calling the stub and doing nothing).
 * **Dual Model Configuration:** Food analysis uses `gemini-2.5-flash`; Coach chat uses a separately configurable `GEMINI_COACH_MODEL` (defaults to `gemini-2.0-flash`) to keep free-tier quotas from clashing.
 
 ### 7. Engagement & Gamified Challenges (Phase 4)
