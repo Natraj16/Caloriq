@@ -1,5 +1,5 @@
 import json
-from langchain_classic.memory import ConversationBufferWindowMemory
+from langchain.memory import ConversationBufferWindowMemory
 from langchain_core.messages import messages_from_dict, messages_to_dict
 from app.cache import cache
 
