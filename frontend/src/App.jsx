@@ -14,6 +14,7 @@ import Dashboard from './pages/Dashboard';
 import Analytics from './pages/Analytics';
 import Profile from './pages/Profile';
 import Challenges from './pages/Challenges';
+import Calculator from './pages/Calculator';
 import ChatWidget from './components/ChatWidget';
 
 /**
@@ -105,6 +106,12 @@ function AppRoutes() {
         <Route path="/challenges" element={
           <ProtectedRoute>
             <Challenges />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/calculator" element={
+          <ProtectedRoute>
+            <Calculator />
           </ProtectedRoute>
         } />
 

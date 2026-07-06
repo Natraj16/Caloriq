@@ -54,6 +54,7 @@ export default function Navbar() {
                   <>
                     <Link to="/analytics" className="nav-link">Analytics</Link>
                     <Link to="/challenges" className="nav-link">Challenges</Link>
+                    <Link to="/calculator" className="nav-link">Calculator</Link>
                   </>
                 )}
                 <div className="navbar-user">
@@ -105,6 +106,7 @@ export default function Navbar() {
               <>
                 <Link to="/analytics" className="nav-link" onClick={closeMenu}>Analytics</Link>
                 <Link to="/challenges" className="nav-link" onClick={closeMenu}>Challenges</Link>
+                <Link to="/calculator" className="nav-mobile-link" onClick={closeMenu}>Calculator</Link>
               </>
             )}
             <Link to="/profile" className="nav-link" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
