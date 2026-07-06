@@ -55,86 +55,30 @@
 .meals-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
 }
 
-.meal-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-md) var(--space-lg);
-  background: var(--color-paper);
-  border: 1px solid var(--color-silver);
-  border-radius: var(--radius-cards);
-  transition: all var(--transition-base);
-  gap: var(--space-md);
-  box-shadow: var(--shadow-sm);
+.meal-date-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
 }
 
-.meal-row:hover {
-  background: var(--color-paper);
-  border-color: var(--color-graphite);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
+.meal-date-header {
+  grid-column: 1 / -1;
 }
 
-.meal-row-left {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-  flex: 1;
-  min-width: 0;
-}
-
-.meal-emoji {
-  font-size: 1.6rem;
-  flex-shrink: 0;
-}
-
-.meal-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  text-align: left;
-}
-
-.meal-name {
-  font-family: var(--font-switzer);
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--color-obsidian);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.meal-meta {
-  font-size: 13px;
-  color: var(--color-slate);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 2px;
-}
-
-.meal-row-right {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-  flex-shrink: 0;
-}
-
-.meal-macros {
-  display: flex;
-  gap: var(--space-xs);
-}
-
-.meal-delete {
+/* Meal Card custom styles */
+.meal-delete-abs {
   opacity: 0;
   transition: opacity var(--transition-fast);
+  background: var(--color-bone);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
 }
 
-.meal-row:hover .meal-delete {
+.nutri-card:hover .meal-delete-abs {
   opacity: 1;
 }
 
@@ -155,23 +99,12 @@
 }
 
 @media (max-width: 768px) {
-  .meal-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-sm);
-    padding: var(--space-md);
+  .meal-date-group {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
   }
-  .meal-row-right {
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  .meal-macros {
-    flex-wrap: wrap;
-  }
-  .meal-delete {
+  .meal-delete-abs {
     opacity: 1;
-    margin-left: auto;
   }
 }
 

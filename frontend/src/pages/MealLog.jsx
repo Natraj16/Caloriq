@@ -5,7 +5,7 @@
  */
 
 import { useState, useRef, useEffect } from 'react';
-import { Camera, MessageSquareText, ScanBarcode, Loader2, Check, X, Flame, Zap, Database, BarChart3, Bot } from 'lucide-react';
+import { Camera, MessageSquareText, ScanBarcode, Loader2, Check, X, Flame, Zap, Database, BarChart3, Bot, Leaf, Droplet, Drumstick, Utensils } from 'lucide-react';
 import { mealsAPI } from '../services/api';
 import './MealLog.css';
 
@@ -403,122 +403,110 @@ export default function MealLog() {
           {/* ── Result Panel ────────────────────────────── */}
           <div className="result-panel">
             {result ? (
-              <div className="card result-card animate-slide-up">
-                <div className="result-header">
-                  <div className="result-success">
-                    <Check size={20} />
-                    Analysis Complete
+              <div className="nutri-card animate-slide-up">
+                <div className="nutri-header">
+                  <div className="nutri-thumbnail">
+                    {photoPreview ? (
+                      <img src={photoPreview} alt="Food" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '16px' }} />
+                    ) : (
+                      <Utensils size={32} />
+                    )}
                   </div>
-                  {tier && (
-                    <div className={`tier-badge ${tier.color}`}>
-                      <TierIcon size={12} />
-                      {tier.label}
-                      {result.analysis_time_ms != null && (
-                        <span className="tier-time">{result.analysis_time_ms}ms</span>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                {/* Interactive Modification Fields */}
-                <div className="result-adjustment-form">
-                  <div className="input-group">
-                    <label className="input-label" htmlFor="result-food-name-input">Food Name</label>
-                    <input
-                      id="result-food-name-input"
-                      type="text"
-                      className="input"
-                      value={foodName}
-                      onChange={(e) => setFoodName(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="input-row-grid">
-                    <div className="input-group">
-                      <label className="input-label" htmlFor="result-serving-select">Serving Size</label>
-                      <select
-                        id="result-serving-select"
-                        className="input"
-                        value={selectedOptionIndex}
-                        onChange={(e) => setSelectedOptionIndex(parseInt(e.target.value) || 0)}
-                        style={{ height: '42px' }}
-                      >
-                        {servingOptions.map((opt, idx) => (
-                          <option key={idx} value={idx}>
-                            {opt.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="input-group">
-                      <label className="input-label" htmlFor="result-quantity-input">Quantity</label>
-                      <input
-                        id="result-quantity-input"
-                        type="number"
-                        className="input"
-                        step="0.1"
-                        min="0"
-                        value={quantity}
-                        onChange={(e) => setQuantity(e.target.value)}
-                        placeholder="e.g. 1"
-                      />
+                  <div className="nutri-info">
+                    <div className="nutri-title">{foodName}</div>
+                    <div className="nutri-meta">
+                      <span>Nutri-Score <span className="nutri-score-badge">{Math.round((result.confidence_score || 0) * 100)}</span></span>
+                      <span>
+                        {quantity} {servingOptions[selectedOptionIndex]?.unit || 'serving'}
+                      </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="macro-grid" style={{ marginTop: 'var(--space-md)' }}>
-                  <div className="macro-card macro-calories">
-                    <span className="macro-value">{Math.round(result.calories * getSafeMultiplier())}</span>
-                    <span className="macro-label">Calories</span>
+                <div className="nutri-macros">
+                  <div className="nutri-macro">
+                    <div className="nutri-macro-val">
+                      {Math.round(result.calories * getSafeMultiplier())}
+                    </div>
+                    <div className="nutri-macro-label">
+                      <Flame size={12} style={{ color: '#ff6b00' }} /> Calorie
+                    </div>
                   </div>
-                  <div className="macro-card macro-protein">
-                    <span className="macro-value">{(result.protein_g * getSafeMultiplier()).toFixed(1)}g</span>
-                    <span className="macro-label">Protein</span>
+                  <div className="nutri-macro">
+                    <div className="nutri-macro-val">
+                      {Math.round(result.carbs_g * getSafeMultiplier())}g
+                    </div>
+                    <div className="nutri-macro-label">
+                      <Leaf size={12} style={{ color: '#0f9d58' }} /> Carbs
+                    </div>
                   </div>
-                  <div className="macro-card macro-carbs">
-                    <span className="macro-value">{(result.carbs_g * getSafeMultiplier()).toFixed(1)}g</span>
-                    <span className="macro-label">Carbs</span>
+                  <div className="nutri-macro">
+                    <div className="nutri-macro-val">
+                      {Math.round(result.fat_g * getSafeMultiplier())}g
+                    </div>
+                    <div className="nutri-macro-label">
+                      <Droplet size={12} style={{ color: '#f4b400' }} /> Fat
+                    </div>
                   </div>
-                  <div className="macro-card macro-fat">
-                    <span className="macro-value">{(result.fat_g * getSafeMultiplier()).toFixed(1)}g</span>
-                    <span className="macro-label">Fat</span>
+                  <div className="nutri-macro">
+                    <div className="nutri-macro-val">
+                      {Math.round(result.protein_g * getSafeMultiplier())}g
+                    </div>
+                    <div className="nutri-macro-label">
+                      <Drumstick size={12} style={{ color: '#db4437' }} /> Protein
+                    </div>
                   </div>
                 </div>
 
-                {result.confidence_score != null && (
-                  <div className="confidence-bar" style={{ marginBottom: 'var(--space-md)' }}>
-                    <span className="confidence-label">
-                      Confidence: {Math.round(result.confidence_score * 100)}%
-                    </span>
-                    <div className="confidence-track">
-                      <div
-                        className="confidence-fill"
-                        style={{ width: `${result.confidence_score * 100}%` }}
-                      />
-                    </div>
-                  </div>
-                )}
+                {/* Keep a subtle editor for serving sizes to maintain functionality */}
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+                  <select
+                    className="input"
+                    value={selectedOptionIndex}
+                    onChange={(e) => setSelectedOptionIndex(parseInt(e.target.value) || 0)}
+                    style={{ flex: 2, height: '40px', padding: '0 12px', fontSize: '13px' }}
+                  >
+                    {servingOptions.map((opt, idx) => (
+                      <option key={idx} value={idx}>{opt.label}</option>
+                    ))}
+                  </select>
+                  <input
+                    type="number"
+                    className="input"
+                    step="0.1"
+                    min="0"
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    style={{ flex: 1, height: '40px', padding: '0 12px', fontSize: '13px' }}
+                    placeholder="Qty"
+                  />
+                </div>
 
-                {error && <div className="auth-error" style={{ marginBottom: 'var(--space-md)' }}>{error}</div>}
+                {error && <div className="auth-error" style={{ marginBottom: '16px' }}>{error}</div>}
 
-                <button
-                  className="btn btn-accent btn-lg meal-submit"
-                  onClick={handleSave}
-                  disabled={saveLoading}
-                >
-                  {saveLoading ? (
-                    <>
-                      <Loader2 size={18} className="spin" />
-                      Logging Meal...
-                    </>
-                  ) : (
-                    <>
-                      <Check size={18} />
-                      Confirm & Log Meal
-                    </>
-                  )}
-                </button>
+                <div className="nutri-actions">
+                  <button 
+                    className="btn btn-outline" 
+                    style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                    onClick={() => {
+                      setResult(null);
+                      setText('');
+                      setBarcode('');
+                      setPhotoFile(null);
+                      setPhotoPreview(null);
+                    }}
+                  >
+                    Discard
+                  </button>
+                  <button 
+                    className="btn btn-dark" 
+                    style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                    onClick={handleSave}
+                    disabled={saveLoading}
+                  >
+                    {saveLoading ? <Loader2 size={16} className="spin" /> : 'Log and Continue'}
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="result-placeholder">

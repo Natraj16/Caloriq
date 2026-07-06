@@ -5,8 +5,9 @@
 
 import { useState, useEffect } from 'react';
 import { mealsAPI } from '../services/api';
-import { Trash2, ChevronLeft, ChevronRight, Zap, Database, BarChart3, Bot, ScanBarcode, UtensilsCrossed } from 'lucide-react';
+import { Trash2, ChevronLeft, ChevronRight, Zap, Database, BarChart3, Bot, ScanBarcode, UtensilsCrossed, Flame, Leaf, Droplet, Drumstick, Utensils } from 'lucide-react';
 import './MealHistory.css';
+import './MealLog.css';
 
 const TIER_META = {
   cache: { icon: Zap, label: 'Cache', color: 'tier-cache' },
@@ -111,35 +112,67 @@ export default function MealHistory() {
                     const tier = TIER_META[meal.pipeline_tier] || TIER_META.gemini;
                     const TierIcon = tier.icon;
                     return (
-                      <div key={meal.id} className="meal-row animate-fade-in">
-                        <div className="meal-row-left">
-                          <span className="meal-emoji">{MEAL_EMOJI[meal.meal_type] || '🍽️'}</span>
-                          <div className="meal-info">
-                            <span className="meal-name">{meal.food_name}</span>
-                            <span className="meal-meta">
-                              {formatTime(meal.logged_at)}
-                              {meal.serving_size && ` · ${meal.serving_size}`}
-                            </span>
+                      <div key={meal.id} className="nutri-card animate-fade-in" style={{ position: 'relative' }}>
+                        <div className="nutri-header">
+                          <div className="nutri-thumbnail">
+                            <span style={{ fontSize: '32px' }}>{MEAL_EMOJI[meal.meal_type] || '🍽️'}</span>
                           </div>
-                        </div>
-                        <div className="meal-row-right">
-                          <div className="meal-macros">
-                            <span className="macro-chip macro-chip-calories">{Math.round(meal.calories)} kcal</span>
-                            <span className="macro-chip macro-chip-protein">{meal.protein_g.toFixed(1)}g P</span>
-                            <span className="macro-chip macro-chip-carbs">{meal.carbs_g.toFixed(1)}g C</span>
-                            <span className="macro-chip macro-chip-fat">{meal.fat_g.toFixed(1)}g F</span>
+                          <div className="nutri-info">
+                            <div className="nutri-title">{meal.food_name}</div>
+                            <div className="nutri-meta">
+                              <span>
+                                {formatTime(meal.logged_at)} {meal.serving_size && ` · ${meal.serving_size}`}
+                              </span>
+                              <div className={`tier-badge ${tier.color}`} style={{ marginLeft: '8px' }}>
+                                <TierIcon size={10} />
+                                {tier.label}
+                              </div>
+                            </div>
                           </div>
-                          <div className={`tier-badge ${tier.color}`}>
-                            <TierIcon size={10} />
-                            {tier.label}
-                          </div>
+                          
                           <button
-                            className="btn btn-ghost btn-icon btn-sm meal-delete"
+                            className="btn btn-ghost btn-icon btn-sm meal-delete-abs"
                             onClick={() => handleDelete(meal.id)}
                             title="Delete meal"
+                            style={{ position: 'absolute', top: '16px', right: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                           >
-                            <Trash2 size={14} />
+                            <Trash2 size={16} style={{ color: 'var(--color-error)' }} />
                           </button>
+                        </div>
+        
+                        <div className="nutri-macros" style={{ marginBottom: 0, borderBottom: 'none', paddingBottom: 0 }}>
+                          <div className="nutri-macro">
+                            <div className="nutri-macro-val">
+                              {Math.round(meal.calories)}
+                            </div>
+                            <div className="nutri-macro-label">
+                              <Flame size={12} style={{ color: '#ff6b00' }} /> Calorie
+                            </div>
+                          </div>
+                          <div className="nutri-macro">
+                            <div className="nutri-macro-val">
+                              {meal.carbs_g.toFixed(1)}g
+                            </div>
+                            <div className="nutri-macro-label">
+                              <Leaf size={12} style={{ color: '#0f9d58' }} /> Carbs
+                            </div>
+                          </div>
+                          <div className="nutri-macro">
+                            <div className="nutri-macro-val">
+                              {meal.fat_g.toFixed(1)}g
+                            </div>
+                            <div className="nutri-macro-label">
+                              <Droplet size={12} style={{ color: '#f4b400' }} /> Fat
+                            </div>
+                          </div>
+                          <div className="nutri-macro">
+                            <div className="nutri-macro-val">
+                              {meal.protein_g.toFixed(1)}g
+                            </div>
+                            <div className="nutri-macro-label">
+                              <Drumstick size={12} style={{ color: '#db4437' }} /> Protein
+                            </div>
+                          </div>
                         </div>
                       </div>
                     );

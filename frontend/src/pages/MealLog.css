@@ -200,6 +200,119 @@
   border-radius: var(--radius-cards);
 }
 
+/* Nutri Card Styling */
+.nutri-card {
+  background: var(--color-paper);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--color-silver);
+}
+
+.nutri-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.nutri-thumbnail {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  object-fit: cover;
+  background: var(--color-bone);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-slate);
+}
+
+.nutri-info {
+  flex: 1;
+}
+
+.nutri-title {
+  font-family: var(--font-switzer);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-obsidian);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.nutri-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--color-slate);
+}
+
+.nutri-score-badge {
+  color: #ff6b00;
+  font-weight: 700;
+}
+
+.nutri-macros {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid var(--color-bone);
+  border-bottom: 1px solid var(--color-bone);
+  margin-bottom: 24px;
+}
+
+.nutri-macro {
+  flex: 1;
+  text-align: center;
+  border-right: 1px solid var(--color-bone);
+}
+
+.nutri-macro:last-child {
+  border-right: none;
+}
+
+.nutri-macro-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-obsidian);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.nutri-macro-label {
+  font-size: 12px;
+  color: var(--color-slate);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.nutri-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--color-obsidian);
+  color: var(--color-obsidian);
+  border-radius: 12px;
+}
+
+.btn-dark {
+  background: var(--color-obsidian);
+  color: var(--color-paper);
+  border: none;
+  border-radius: 12px;
+}
+
 .result-header {
   display: flex;
   align-items: center;
