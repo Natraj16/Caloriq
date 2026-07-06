@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
+from datetime import date
 
 class UserProfileBase(BaseModel):
     name: Optional[str] = Field(None, max_length=255)
@@ -8,6 +9,8 @@ class UserProfileBase(BaseModel):
     height_cm: float = Field(..., ge=30.0, le=300.0)
     weight_kg: float = Field(..., ge=10.0, le=500.0)
     goal: str = Field(..., pattern="^(lose|maintain|gain)$")
+    target_weight_kg: Optional[float] = Field(None, ge=10.0, le=500.0)
+    target_date: Optional[date] = None
     activity_level: str = Field(..., pattern="^(sedentary|light|moderate|active|very_active)$")
     dietary_preferences: List[str] = Field(default_factory=list)
     allergies: List[str] = Field(default_factory=list)
@@ -27,6 +30,8 @@ class UserProfileUpdate(BaseModel):
     height_cm: Optional[float] = Field(None, ge=30.0, le=300.0)
     weight_kg: Optional[float] = Field(None, ge=10.0, le=500.0)
     goal: Optional[str] = Field(None, pattern="^(lose|maintain|gain)$")
+    target_weight_kg: Optional[float] = Field(None, ge=10.0, le=500.0)
+    target_date: Optional[date] = None
     activity_level: Optional[str] = Field(None, pattern="^(sedentary|light|moderate|active|very_active)$")
     dietary_preferences: Optional[List[str]] = None
     allergies: Optional[List[str]] = None

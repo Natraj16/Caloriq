@@ -27,6 +27,8 @@ settings = get_settings()
 
 def update_user_metrics(
     weight_kg: float | None = None,
+    target_weight_kg: float | None = None,
+    target_date: str | None = None,
     calories: int | None = None,
     protein: int | None = None,
     carbs: int | None = None,
@@ -43,6 +45,8 @@ def update_user_metrics(
     Args:
         weight_kg: The user's current body weight in kilograms. Provide this to log
                    a new weight measurement and update their profile weight.
+        target_weight_kg: The user's goal target weight in kilograms.
+        target_date: The target date to reach the goal weight (YYYY-MM-DD format).
         calories:  The new daily calorie target in kcal. Provide to override the
                    calculated calorie goal.
         protein:   The new daily protein target in grams.
@@ -117,6 +121,19 @@ async def get_coach_response(
                         profile.weight_kg = float(args["weight_kg"])
                         if "weight" not in data_changed:
                             data_changed.append("weight")
+                            
+                    if "target_weight_kg" in args and args["target_weight_kg"] is not None:
+                        profile.target_weight_kg = float(args["target_weight_kg"])
+                        if "weight" not in data_changed:
+                            data_changed.append("weight")
+
+                    if "target_date" in args and args["target_date"] is not None:
+                        try:
+                            profile.target_date = datetime.strptime(args["target_date"], "%Y-%m-%d").date()
+                            if "weight" not in data_changed:
+                                data_changed.append("weight")
+                        except ValueError:
+                            pass
 
                     targets_changed = False
                     if "calories" in args and args["calories"] is not None:

@@ -3,10 +3,10 @@ Caloriq — User and UserProfile SQLAlchemy models.
 """
 
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 
 from sqlalchemy import (
-    String, Boolean, DateTime, Integer, Float, ForeignKey, Text, JSON
+    String, Boolean, DateTime, Date, Integer, Float, ForeignKey, Text, JSON
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -80,6 +80,8 @@ class UserProfile(Base):
     goal: Mapped[str | None] = mapped_column(
         String(20), nullable=True  # lose | maintain | gain
     )
+    target_weight_kg: Mapped[float | None] = mapped_column(Float, nullable=True)
+    target_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     activity_level: Mapped[str | None] = mapped_column(
         String(20), nullable=True  # sedentary | light | moderate | active | very_active
     )

@@ -32,6 +32,8 @@ export default function Profile() {
     sex: '',
     height_cm: '',
     weight_kg: '',
+    target_weight_kg: '',
+    target_date: '',
     goal: '',
     activity_level: '',
     dietary_preferences: [],
@@ -56,6 +58,8 @@ export default function Profile() {
           sex: data.sex || '',
           height_cm: data.height_cm || '',
           weight_kg: data.weight_kg || '',
+          target_weight_kg: data.target_weight_kg || '',
+          target_date: data.target_date || '',
           goal: data.goal || '',
           activity_level: data.activity_level || '',
           dietary_preferences: data.dietary_preferences || [],
@@ -112,6 +116,8 @@ export default function Profile() {
         sex: formData.sex,
         height_cm: parseFloat(formData.height_cm),
         weight_kg: parseFloat(formData.weight_kg),
+        target_weight_kg: formData.target_weight_kg ? parseFloat(formData.target_weight_kg) : null,
+        target_date: formData.target_date || null,
         goal: formData.goal,
         activity_level: formData.activity_level,
         dietary_preferences: formData.dietary_preferences,
@@ -319,6 +325,32 @@ export default function Profile() {
                   max="500"
                   step="0.1"
                   required
+                />
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="input-group">
+                <label className="input-label">Target Weight (kg)</label>
+                <input
+                  type="number"
+                  className="input"
+                  placeholder="e.g. 70.0"
+                  value={formData.target_weight_kg}
+                  onChange={(e) => handleInputChange('target_weight_kg', e.target.value)}
+                  min="10"
+                  max="500"
+                  step="0.1"
+                />
+              </div>
+
+              <div className="input-group">
+                <label className="input-label">Target Date</label>
+                <input
+                  type="date"
+                  className="input"
+                  value={formData.target_date}
+                  onChange={(e) => handleInputChange('target_date', e.target.value)}
                 />
               </div>
             </div>
