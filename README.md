@@ -32,11 +32,13 @@ Every natural language query and photo upload passes through an intelligent fall
 * Full **Dark Mode / Light Mode** theme toggle with persistent `localStorage` memory.
 * Responsive layouts tailored for desktop and mobile viewport sizes.
 
-### 5. Personalization & Dashboard (Phase 2)
+### 5. Personalization, Analytics & Calculators (Phase 2)
 * **Body Metrics Onboarding:** Multi-step onboarding collecting age, height, weight, activity levels, allergies, and goals.
-* **Auto-Macro Budgets:** Automatic calorie and macro requirements calculator using the Mifflin-St Jeor equation.
+* **Health Calculator:** A dedicated tabbed calculator for computing both Body Mass Index (BMI) and Basal Metabolic Rate (BMR) using the highly accurate Mifflin-St Jeor equation.
+* **Auto-Macro Budgets:** Automatic calorie and macro requirements calculator based on profile data.
 * **Custom Target Overrides:** Ability to individually override calculated values for Calories, Protein, Carbs, or Fat to suit unique dietary plans.
-* **Aggregated Dashboard:** Visual breakdown of daily remaining macros and metrics.
+* **Aggregated Dashboard & Analytics:** Visual breakdown of daily remaining macros, alongside an interactive weight progress chart that dynamically scales to track actual weight logs against the baseline target weight.
+* **Premium Nutri-Cards:** Beautifully styled, app-like nutrition cards for viewing meal logs and exploring history, featuring macro icons and interactive layouts.
 
 ### 6. Context-Aware AI Coach — Coach Grit (Phase 3)
 * **Conversational Chat Panel:** A floating chat widget powered by Gemini that answers dietary questions grounded in the user's real-time context — profile, allergy restrictions, macro targets, and last 20 meal logs.
@@ -142,16 +144,17 @@ caloriq/
 
 ## 🔮 Upcoming Project Phases
 
-### 📧 Phase 5 — Weekly Email Digests
-* Weekly emails (via Resend) summing up nutritional trends, weight metrics, and streak statuses.
-
-### 🗄️ Phase 6 — Production-Grade Database Integration
+### 🗄️ Phase 5 — Production-Grade Database & Smart Auth
+* **Smart Authentication:** Implementation of passwordless login, magic links, or OAuth (e.g., Google/Apple Sign-In) to streamline the onboarding experience.
 * Migrating from SQLite to a free managed **PostgreSQL** database (e.g., **Supabase** or **Neon**) for zero-cost, long-term data storage.
 * Implementation of database connection pooling (e.g., using SQLAlchemy's built-in `QueuePool` or the cloud provider's native pooler connection string) to efficiently manage concurrent connections.
 
-### 💳 Phase 7 — API Keys & Subscriptions
+### 💳 Phase 6 — API Keys & Subscriptions
 * Public API key generation (B2B usage keys, rate limit, usage meters).
 * Payment processing using Dodo Payments for Pro subscription upgrades.
+
+### 📧 Phase 7 — Weekly Email Digests
+* Weekly emails (via Resend) summing up nutritional trends, weight metrics, and streak statuses.
 
 ### 🧪 Phase 8 — Hardening & Automation
 * Unit testing for pipeline lookup fallbacks and token validation using pytest.
