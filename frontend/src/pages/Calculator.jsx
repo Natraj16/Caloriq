@@ -127,6 +127,60 @@ export default function Calculator() {
             </button>
           </div>
 
+          {activeTab === 'bmi' && bmi && (
+            <div className="bmi-result-section animate-fade-in" style={{ marginBottom: '32px', paddingBottom: '24px', borderBottom: '1px solid var(--color-silver)' }}>
+              <h2 style={{ fontSize: '1.5rem', color: 'var(--color-slate)' }}>
+                Your BMI: <span className="bmi-value text-gradient">{bmi}</span>
+              </h2>
+              <p className="bmi-category">Result: <strong style={{ color: 'var(--color-obsidian)' }}>{bmiCategory}</strong></p>
+              
+              <div className="bmi-meter-container" style={{ marginTop: '40px' }}>
+                <svg className="bmi-meter" viewBox="0 0 200 110" style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.05))' }}>
+                  {/* Background Track */}
+                  <path d={describeArc(100, 100, 80, -90, 90)} fill="none" stroke="var(--color-bone)" strokeWidth="16" strokeLinecap="round" />
+                  
+                  {/* Colored Segments (with 2 degree gaps for styling) */}
+                  <path d={describeArc(100, 100, 80, -90, angle18_5 - 1.5)} fill="none" stroke="var(--color-info)" strokeWidth="16" strokeLinecap="round" />
+                  <path d={describeArc(100, 100, 80, angle18_5 + 1.5, angle25 - 1.5)} fill="none" stroke="var(--color-success)" strokeWidth="16" strokeLinecap="round" />
+                  <path d={describeArc(100, 100, 80, angle25 + 1.5, angle30 - 1.5)} fill="none" stroke="var(--color-warning)" strokeWidth="16" strokeLinecap="round" />
+                  <path d={describeArc(100, 100, 80, angle30 + 1.5, 90)} fill="none" stroke="var(--color-error)" strokeWidth="16" strokeLinecap="round" />
+                  
+                  {/* Tick Marks */}
+                  <line x1="100" y1="18" x2="100" y2="22" stroke="var(--color-obsidian)" strokeWidth="2" opacity="0.3" transform={`rotate(${angle18_5} 100 100)`} />
+                  <line x1="100" y1="18" x2="100" y2="22" stroke="var(--color-obsidian)" strokeWidth="2" opacity="0.3" transform={`rotate(${angle25} 100 100)`} />
+                  <line x1="100" y1="18" x2="100" y2="22" stroke="var(--color-obsidian)" strokeWidth="2" opacity="0.3" transform={`rotate(${angle30} 100 100)`} />
+
+                  {/* Sleek Needle */}
+                  <g 
+                    className="needle" 
+                    style={{ transform: `translate(100px, 100px) rotate(${getNeedleRotation()}deg)` }}
+                  >
+                    <path d="M -4,0 L 4,0 L 1,-75 L -1,-75 Z" fill="var(--color-obsidian)" />
+                    <circle cx="0" cy="0" r="8" fill="var(--color-paper)" stroke="var(--color-obsidian)" strokeWidth="3" />
+                  </g>
+                </svg>
+                <div className="meter-labels" style={{ marginTop: '15px' }}>
+                  <span style={{ color: 'var(--color-info)' }}>Under</span>
+                  <span style={{ color: 'var(--color-success)' }}>Normal</span>
+                  <span style={{ color: 'var(--color-warning)' }}>Over</span>
+                  <span style={{ color: 'var(--color-error)' }}>Obese</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'bmr' && bmr && (
+            <div className="bmi-result-section animate-fade-in" style={{ marginBottom: '32px', paddingBottom: '24px', borderBottom: '1px solid var(--color-silver)', textAlign: 'center' }}>
+              <h3 style={{ fontSize: '18px', color: 'var(--color-slate)', marginBottom: '8px' }}>Basal Metabolic Rate (BMR)</h3>
+              <div style={{ fontSize: '32px', fontWeight: '700', color: 'var(--color-obsidian)' }}>
+                {bmr} <span style={{ fontSize: '16px', color: 'var(--color-slate)', fontWeight: '500' }}>kcal / day</span>
+              </div>
+              <p style={{ fontSize: '13px', color: 'var(--color-slate)', marginTop: '8px' }}>
+                Calories your body burns at rest.
+              </p>
+            </div>
+          )}
+
           <form className="bmi-form" onSubmit={activeTab === 'bmi' ? calculateBMI : calculateBMR}>
             <div className="form-group toggle-group">
               <button
@@ -227,60 +281,6 @@ export default function Calculator() {
 
             <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Calculate {activeTab === 'bmi' ? 'BMI' : 'BMR'}</button>
           </form>
-
-          {activeTab === 'bmi' && bmi && (
-            <div className="bmi-result-section animate-fade-in">
-              <h2 style={{ fontSize: '1.5rem', color: 'var(--color-slate)' }}>
-                Your BMI: <span className="bmi-value text-gradient">{bmi}</span>
-              </h2>
-              <p className="bmi-category">Result: <strong style={{ color: 'var(--color-obsidian)' }}>{bmiCategory}</strong></p>
-              
-              <div className="bmi-meter-container" style={{ marginTop: '40px' }}>
-                <svg className="bmi-meter" viewBox="0 0 200 110" style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.05))' }}>
-                  {/* Background Track */}
-                  <path d={describeArc(100, 100, 80, -90, 90)} fill="none" stroke="var(--color-bone)" strokeWidth="16" strokeLinecap="round" />
-                  
-                  {/* Colored Segments (with 2 degree gaps for styling) */}
-                  <path d={describeArc(100, 100, 80, -90, angle18_5 - 1.5)} fill="none" stroke="var(--color-info)" strokeWidth="16" strokeLinecap="round" />
-                  <path d={describeArc(100, 100, 80, angle18_5 + 1.5, angle25 - 1.5)} fill="none" stroke="var(--color-success)" strokeWidth="16" strokeLinecap="round" />
-                  <path d={describeArc(100, 100, 80, angle25 + 1.5, angle30 - 1.5)} fill="none" stroke="var(--color-warning)" strokeWidth="16" strokeLinecap="round" />
-                  <path d={describeArc(100, 100, 80, angle30 + 1.5, 90)} fill="none" stroke="var(--color-error)" strokeWidth="16" strokeLinecap="round" />
-                  
-                  {/* Tick Marks */}
-                  <line x1="100" y1="18" x2="100" y2="22" stroke="var(--color-obsidian)" strokeWidth="2" opacity="0.3" transform={`rotate(${angle18_5} 100 100)`} />
-                  <line x1="100" y1="18" x2="100" y2="22" stroke="var(--color-obsidian)" strokeWidth="2" opacity="0.3" transform={`rotate(${angle25} 100 100)`} />
-                  <line x1="100" y1="18" x2="100" y2="22" stroke="var(--color-obsidian)" strokeWidth="2" opacity="0.3" transform={`rotate(${angle30} 100 100)`} />
-
-                  {/* Sleek Needle */}
-                  <g 
-                    className="needle" 
-                    style={{ transform: `translate(100px, 100px) rotate(${getNeedleRotation()}deg)` }}
-                  >
-                    <path d="M -4,0 L 4,0 L 1,-75 L -1,-75 Z" fill="var(--color-obsidian)" />
-                    <circle cx="0" cy="0" r="8" fill="var(--color-paper)" stroke="var(--color-obsidian)" strokeWidth="3" />
-                  </g>
-                </svg>
-                <div className="meter-labels" style={{ marginTop: '15px' }}>
-                  <span style={{ color: 'var(--color-info)' }}>Under</span>
-                  <span style={{ color: 'var(--color-success)' }}>Normal</span>
-                  <span style={{ color: 'var(--color-warning)' }}>Over</span>
-                  <span style={{ color: 'var(--color-error)' }}>Obese</span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'bmr' && bmr && (
-            <div className="bmi-result-section animate-fade-in" style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid var(--color-silver)', textAlign: 'center' }}>
-              <h3 style={{ fontSize: '18px', color: 'var(--color-slate)', marginBottom: '8px' }}>Basal Metabolic Rate (BMR)</h3>
-              <div style={{ fontSize: '32px', fontWeight: '700', color: 'var(--color-obsidian)' }}>
-                {bmr} <span style={{ fontSize: '16px', color: 'var(--color-slate)', fontWeight: '500' }}>kcal / day</span>
-              </div>
-              <p style={{ fontSize: '13px', color: 'var(--color-slate)', marginTop: '8px' }}>
-                Calories your body burns at rest.
-              </p>
-            </div>
-          )}
         </div>
       </div>
     </div>
