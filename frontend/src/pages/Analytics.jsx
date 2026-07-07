@@ -130,7 +130,13 @@ export default function Analytics() {
   const bmiMax = Math.min(50, maxBmiVal + (bmiDiff * 0.1 || 2));
 
   // Helper for linear BMI marker
-  const currentBmi = activeDataPoints.length > 0 ? activeDataPoints[activeDataPoints.length - 1].bmi : null;
+  let currentBmi = null;
+  if (userProfile?.weight_kg && userHeight && userHeight > 0) {
+    const heightM = userHeight / 100;
+    currentBmi = parseFloat((userProfile.weight_kg / (heightM * heightM)).toFixed(1));
+  } else if (activeDataPoints.length > 0 && activeDataPoints[activeDataPoints.length - 1].bmi) {
+    currentBmi = activeDataPoints[activeDataPoints.length - 1].bmi;
+  }
   const getBmiMarkerStyle = () => {
     if (!currentBmi) return { left: '0%' };
     // Map BMI 15 to 40 to 0% - 100%
@@ -235,12 +241,20 @@ export default function Analytics() {
             ) : null}
 
             {/* Goal Stats Row */}
-            {userProfile?.target_weight_kg && (
+            {(userProfile?.target_weight_kg || userProfile?.weight_kg) && (
               <div className="goal-stats-row">
-                <div className="goal-stat-box">
-                  <div className="goal-stat-label">Goal Weight</div>
-                  <div className="goal-stat-val">{userProfile.target_weight_kg} kg</div>
-                </div>
+                {userProfile?.weight_kg && (
+                  <div className="goal-stat-box">
+                    <div className="goal-stat-label">Current Weight</div>
+                    <div className="goal-stat-val" style={{ color: 'var(--color-info)' }}>{userProfile.weight_kg} kg</div>
+                  </div>
+                )}
+                {userProfile?.target_weight_kg && (
+                  <div className="goal-stat-box">
+                    <div className="goal-stat-label">Goal Weight</div>
+                    <div className="goal-stat-val">{userProfile.target_weight_kg} kg</div>
+                  </div>
+                )}
                 {userProfile?.target_date && (
                   <div className="goal-stat-box">
                     <div className="goal-stat-label">Reach goal</div>
@@ -312,8 +326,10 @@ export default function Analytics() {
 
                   {/* Draw trend path */}
                   {(() => {
+                    const totalDays = analyticsData.length;
                     const points = activeDataPoints.map((d, index) => {
-                      const x = calMargin.left + index * (calGraphWidth / (totalPoints - 1 || 1));
+                      const dayIndex = analyticsData.findIndex(item => item.date === d.date);
+                      const x = calMargin.left + dayIndex * (calGraphWidth / (totalDays - 1 || 1));
                       const y = calMargin.top + calGraphHeight - ((d.weight - weightMin) / (weightMax - weightMin)) * calGraphHeight;
                       return { x, y, date: d.date, weight: d.weight, isLast: index === activeDataPoints.length - 1 };
                     });
@@ -324,6 +340,25 @@ export default function Analytics() {
 
                     return (
                       <g>
+                        {/* Draw the X-axis labels based on the full timeframe */}
+                        {analyticsData.map((d, i) => {
+                           if (totalDays < 8 || i % Math.ceil(totalDays / 7) === 0) {
+                              const x = calMargin.left + i * (calGraphWidth / (totalDays - 1 || 1));
+                              return (
+                                <text
+                                  key={d.date}
+                                  x={x}
+                                  y={calSvgHeight - 12}
+                                  textAnchor="middle"
+                                  className="chart-axis-label"
+                                >
+                                  {new Date(d.date).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' })}
+                                </text>
+                              );
+                           }
+                           return null;
+                        })}
+
                         <path
                           d={pathD}
                           fill="none"
@@ -343,18 +378,6 @@ export default function Analytics() {
                               strokeWidth="2"
                             />
                             
-                            {/* X Axis Date labels */}
-                            {(totalPoints < 8 || i % Math.ceil(totalPoints / 7) === 0) && (
-                              <text
-                                x={p.x}
-                                y={calSvgHeight - 12}
-                                textAnchor="middle"
-                                className="chart-axis-label"
-                              >
-                                {new Date(p.date).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' })}
-                              </text>
-                            )}
-
                             {/* Tooltip for the last point */}
                             {p.isLast && (
                               <g>

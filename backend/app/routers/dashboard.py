@@ -167,25 +167,8 @@ def get_analytics(
         if local_date in daily_data:
             daily_data[local_date]["weight"] = w.weight_kg
 
-    # Fill in missing weights with the last known weight (carry forward)
-    last_known_weight = None
-    # First find if there is a weight logged before start_date
-    prior_weight = db.query(WeightLog).filter(
-        WeightLog.user_id == current_user.id,
-        WeightLog.logged_at < datetime.combine(start_date, datetime.min.time(), tzinfo=pytz.utc)
-    ).order_by(WeightLog.logged_at.desc()).first()
-    
-    if prior_weight:
-        last_known_weight = prior_weight.weight_kg
-    elif profile and profile.weight_kg:
-        last_known_weight = profile.weight_kg
-
+    # We no longer carry forward missing weights, so the graph only shows explicitly logged days.
     sorted_dates = sorted(daily_data.keys())
-    for d in sorted_dates:
-        if daily_data[d]["weight"] is None:
-            daily_data[d]["weight"] = last_known_weight
-        else:
-            last_known_weight = daily_data[d]["weight"]
 
     # Round everything
     result = []
