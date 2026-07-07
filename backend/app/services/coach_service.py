@@ -19,7 +19,7 @@ from app.utils.targets import calculate_targets
 
 from app.coach.prompt import build_context, get_coach_prompt
 from app.coach.chain import run_coach
-from app.coach.memory import persist_memory
+from app.coach.memory import persist_memory, get_or_create_memory
 from app.coach.llm import get_coach_llm
 
 logger = logging.getLogger(__name__)
@@ -27,6 +27,7 @@ settings = get_settings()
 
 def update_user_metrics(
     weight_kg: float | None = None,
+    weight_date: str | None = None,
     target_weight_kg: float | None = None,
     target_date: str | None = None,
     calories: int | None = None,
@@ -40,11 +41,12 @@ def update_user_metrics(
     Call this tool whenever the user:
     - Mentions their current weight or asks to log/update their weight.
     - Asks to change, set, or update their calorie target or any macro target.
-    - Reports a new measurement (e.g. "I weigh 72kg now", "log my weight as 80kg").
+    - Reports a new measurement (e.g. "I weigh 72kg now", "log my weight as 80kg for yesterday").
 
     Args:
         weight_kg: The user's current body weight in kilograms. Provide this to log
                    a new weight measurement and update their profile weight.
+        weight_date: The date for the weight measurement (YYYY-MM-DD format). Defaults to today if not provided. Use this to log past weights.
         target_weight_kg: The user's goal target weight in kilograms.
         target_date: The target date to reach the goal weight (YYYY-MM-DD format).
         calories:  The new daily calorie target in kcal. Provide to override the
@@ -95,27 +97,57 @@ async def get_coach_response(
             today_totals["carbs"] += m.carbs_g
             today_totals["fat"] += m.fat_g
             
-    context = build_context(profile, recent_meals, today_totals)
+    last_weight = db.query(WeightLog).filter(WeightLog.user_id == profile.user_id).order_by(WeightLog.logged_at.desc()).first()
+    days_since_last_weight_log = None
+    if last_weight and last_weight.logged_at:
+        last_weight_time = last_weight.logged_at.replace(tzinfo=timezone.utc) if last_weight.logged_at.tzinfo is None else last_weight.logged_at
+        delta = datetime.now(timezone.utc) - last_weight_time
+        days_since_last_weight_log = delta.days
+
+    context = build_context(profile, recent_meals, today_totals, days_since_last_weight_log=days_since_last_weight_log)
     
     llm = get_coach_llm().bind_tools([update_user_metrics])
     
     try:
-        response, memory = await run_coach(conversation_id, new_message, context, llm=llm)
+        memory = get_or_create_memory(conversation_id)
+        
+        # Add the human message to memory FIRST
+        memory.chat_memory.add_user_message(new_message)
+        
+        memory_vars = memory.load_memory_variables({})
+        chat_history = memory_vars.get("chat_history", [])
+        
+        prompt = get_coach_prompt()
+        chain = prompt | llm
+        
+        response = await chain.ainvoke({
+            **context,
+            "chat_history": chat_history,
+        })
+        
         data_changed: List[str] = []
         
         while isinstance(response, AIMessage) and response.tool_calls:
             # Add AI message with tool calls to memory
-            memory.chat_memory.messages.append(response)
+            memory.chat_memory.add_message(response)
             
             for tool_call in response.tool_calls:
                 if tool_call["name"] == "update_user_metrics":
                     args = tool_call["args"]
                     
                     if "weight_kg" in args and args["weight_kg"] is not None:
+                        logged_at_time = datetime.now(timezone.utc)
+                        if "weight_date" in args and args["weight_date"] is not None:
+                            try:
+                                parsed_date = datetime.strptime(args["weight_date"], "%Y-%m-%d").replace(tzinfo=timezone.utc)
+                                logged_at_time = parsed_date
+                            except ValueError:
+                                pass
+
                         new_weight = WeightLog(
                             user_id=profile.user_id,
                             weight_kg=float(args["weight_kg"]),
-                            logged_at=datetime.now(timezone.utc)
+                            logged_at=logged_at_time
                         )
                         db.add(new_weight)
                         profile.weight_kg = float(args["weight_kg"])
@@ -172,25 +204,24 @@ async def get_coach_response(
 
                     tool_msg = ToolMessage(
                         content="Success. Metrics updated.",
-                        tool_call_id=tool_call["id"]
+                        tool_call_id=tool_call["id"],
+                        name=tool_call["name"]
                     )
-                    memory.chat_memory.messages.append(tool_msg)
+                    memory.chat_memory.add_message(tool_msg)
             
-            # Call chain again with updated memory
-            prompt = get_coach_prompt()
-            chain = prompt | llm
-            memory_vars = memory.load_memory_variables({"user_message": new_message})
+            # Refresh chat history for the next invocation
+            memory_vars = memory.load_memory_variables({})
+            chat_history = memory_vars.get("chat_history", [])
             
             response = await chain.ainvoke({
                 **context,
-                "chat_history": memory_vars.get("chat_history", []),
-                "user_message": new_message
+                "chat_history": chat_history,
             })
 
         reply = response.content if isinstance(response, AIMessage) else str(response)
         
-        # Save complete turn to memory
-        memory.save_context({"user_message": new_message}, {"output": reply})
+        # Save final AI reply to memory
+        memory.chat_memory.add_ai_message(reply)
         persist_memory(conversation_id, memory)
         
         return reply, data_changed

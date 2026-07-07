@@ -9,6 +9,7 @@ You are chatting with {name}.
 
 USER CONTEXT:
 - Age: {age}, Sex: {sex}, Weight: {weight_kg} kg, Height: {height_cm} cm
+- Days since last weight log: {days_since_last_weight_log}
 - Primary Goal: {goal}
 - Activity Level: {activity_level}
 - Allergies: {allergies}
@@ -29,14 +30,14 @@ COACHING GUIDELINES:
 2. Never suggest foods that conflict with allergies. Warn them immediately if they mention eating something they are allergic to.
 3. Be concise, practical, and encouraging.
 4. Confirm clearly when a tool action was performed.
+5. If 'Days since last weight log' is 3 or more (or 'None'), proactively remind the user to log their weight. Ask for their current weight so you can update it for them.
 """
     return ChatPromptTemplate.from_messages([
         ("system", system_template),
-        ("placeholder", "{chat_history}"),
-        ("human", "{user_message}")
+        ("placeholder", "{chat_history}")
     ])
 
-def build_context(profile: UserProfile, recent_meals: List[MealLog], today_totals: Dict[str, Any], active_challenges: str = "None") -> Dict[str, Any]:
+def build_context(profile: UserProfile, recent_meals: List[MealLog], today_totals: Dict[str, Any], active_challenges: str = "None", days_since_last_weight_log: int | None = None) -> Dict[str, Any]:
     name = profile.name or "User"
     goal = profile.goal or "Not specified"
     allergies = ", ".join(profile.allergies) if profile.allergies else "None"
@@ -79,5 +80,6 @@ def build_context(profile: UserProfile, recent_meals: List[MealLog], today_total
         "remaining_protein": rem_pro,
         "remaining_carbs": rem_carb,
         "remaining_fat": rem_fat,
-        "active_challenges": active_challenges
+        "active_challenges": active_challenges,
+        "days_since_last_weight_log": days_since_last_weight_log if days_since_last_weight_log is not None else "None"
     }
