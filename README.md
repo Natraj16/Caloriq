@@ -155,7 +155,7 @@ caloriq/
 
 ### 📧 Phase 7 — Weekly Email Digests
 * Weekly emails (via Resend) summing up nutritional trends, weight metrics, and streak statuses.
-
+    
 ### 🧪 Phase 8 — Hardening & Automation
 * Unit testing for pipeline lookup fallbacks and token validation using pytest.
 * Locust load testing to ensure concurrency compliance.

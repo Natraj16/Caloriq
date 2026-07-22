@@ -16,7 +16,6 @@ When a request comes in (e.g., sending a chat message to the coach), it flows li
 HTTP Request -> Router (`app/routers/coach.py`) -> Service (`app/services/coach_service.py`) -> LangChain/Gemini AI (`app/coach/chain.py`) -> DB operations -> HTTP Response.
 """
 
-import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -28,13 +27,6 @@ from app.routers import auth, meals, profiles, weights, dashboard, coach, challe
 
 settings = get_settings()
 
-# ── Logging ──────────────────────────────────────────────
-logging.basicConfig(
-    level=logging.DEBUG if settings.DEBUG else logging.INFO,
-    format="%(asctime)s │ %(levelname)-7s │ %(name)s │ %(message)s",
-    datefmt="%H:%M:%S",
-)
-logger = logging.getLogger("caloriq")
 
 
 
@@ -43,7 +35,7 @@ logger = logging.getLogger("caloriq")
 async def lifespan(app: FastAPI):
     # Create all tables (for SQLite dev; in production use Alembic migrations)
     Base.metadata.create_all(bind=engine)
-    logger.info("✅ Database tables created")
+    print("✅ Database tables created")
     
     # ── Seed Default Challenges ──────────────────────────────
     from app.database import SessionLocal
@@ -89,16 +81,16 @@ async def lifespan(app: FastAPI):
             ]
             db.add_all(default_challenges)
             db.commit()
-            logger.info("✅ Seeded default challenges")
+            print("✅ Seeded default challenges")
     except Exception as e:
-        logger.error(f"Failed to seed challenges: {e}")
+        print(f"Failed to seed challenges: {e}")
     finally:
         db.close()
 
-    logger.info("🚀 Caloriq API v%s is running", settings.APP_VERSION)
+    print(f"🚀 Caloriq API v{settings.APP_VERSION} is running")
 
     yield
-    logger.info("👋 Caloriq shutting down")
+    print("👋 Caloriq shutting down")
 
 
 # ── App factory ──────────────────────────────────────────
